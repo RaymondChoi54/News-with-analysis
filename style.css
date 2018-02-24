@@ -97,13 +97,17 @@ input[type=text] {
 }
 
 .articles {
+	margin-top: 50px;
+	position: absolute;
 	background-color: white;
 	width: 100%;
-	margin: 0px;
+	/*margin: 200px;*/
 	padding: 0px;
 }
 
 .article {
+	/*position: fixed;*/
+	/*margin-top: 100px;*/
 	width: 100%;
 	border-style: solid;
 	border-width: 0.5px;
