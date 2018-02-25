@@ -2,55 +2,55 @@
 
 //toggle side navigation
 $("#openSide").click(function(){
-    	$("#Sidenav").css("width","250px");
+        $("#Sidenav").css("width","250px");
 });
 
 $(".closebtn").click(function(){
-    	$("#Sidenav").css("width","0px");
+        $("#Sidenav").css("width","0px");
 });
 
 //toggle search bar
 $("#openSearch").click(function() {
-	if ($("#searchBar").css("display") == "none") {
-    	$("#searchBar").css("display", "block");
-	} else {
-		//search for topic here
-		var topic = $("#searchBar").val();
+    if ($("#searchBar").css("display") == "none") {
+        $("#searchBar").css("display", "block");
+    } else {
+        //search for topic here
+        var topic = $("#searchBar").val();
         fillSite('https://newsapi.org/v2/everything?language=en&q=' + topic + '&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
-	}
+    }
 });
 
 //if user pressed enter search
 $('#searchBar').bind('keypress', function(e) {
-	if (e.keyCode==13) {
-		var topic = $("#searchBar").val();
+    if (e.keyCode==13) {
+        var topic = $("#searchBar").val();
         fillSite('https://newsapi.org/v2/everything?language=en&q=' + topic + '&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
-	}
+    }
 });
 
 //Replace page with content
 $('#saved_button').click(function() {
-	//saved topics
-	clear();
+    //saved topics
+    clear();
 });
 
 $('#login_button').click(function() {
-	//login page
-	clear();
+    //login page
+    clear();
 });
 
 $('#logout_button').click(function() {
-	//logout page
-	clear();
+    //logout page
+    clear();
 });
 
 $("#search_button").click(function() {
         clear();
-		fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
+        fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 });
 
 $(window).bind("load", function() {
-	fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
+    fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
    // do something
 });
 
@@ -72,9 +72,10 @@ function fillSite(url) {
                 // Add image
                 var contain = document.createElement("div");
                 var img = document.createElement("img");
+                //img.classList.add("thumbs")
                 img.src = item.urlToImage;
-                img.style.width = "80px";
-                img.style.height = "80px";
+                //img.style.width = "80px";
+                //img.style.height = "80px";
                 article.appendChild(contain);
                 contain.classList.add("thumbnail");
                 contain.appendChild(img);
