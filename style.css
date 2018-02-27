@@ -21,6 +21,7 @@ header {
 	text-align: center;
 	font-size: 200%;
 	opacity: .8;
+	letter-spacing: 4px;
 }
 
 a {
@@ -98,6 +99,7 @@ h3 {
 	font-size: 200%;
 	z-index: -1;
 	color: #03638c;
+	letter-spacing: 2px;
 }
 
 #advanced_search{
