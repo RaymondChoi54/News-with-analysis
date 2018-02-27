@@ -34,11 +34,13 @@ $('#searchBar').bind('keypress', function(e) {
 $('#saved_button').click(function() {
 	//saved topics
 	clear();
+	$("h3").html("saved topics");
 });
 
 $('#login_button').click(function() {
 	//login page
 	clear();
+	$("h3").html("login");
 });
 
 $('#logout_button').click(function() {
@@ -48,6 +50,7 @@ $('#logout_button').click(function() {
 
 $("#search_button").click(function() {
         clear();
+		$("h3").html("top headlines");
 		fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 });
 
@@ -75,6 +78,7 @@ function getUrl() {
 
 //fill page with articles
 function clear() {
+	$("h3").html("");
     document.getElementsByClassName("articles")[0].innerHTML = "";
 }
 function fillSite(url) {

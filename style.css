@@ -91,6 +91,14 @@ a {
 	padding-top: 8px;
 }
 
+h3 {
+	position: absolute;
+	margin-top: 75px;
+	padding-left: 10px;
+	font-size: 200%;
+	z-index: -1;
+	color: #03638c;
+}
 
 #advanced_search{
 	position: absolute;
@@ -103,7 +111,7 @@ a {
 	font-size: 20px;
 }
 .articles {
-	margin-top: 100px;
+	margin-top: 150px;
 	position: absolute;
 	background-color: white;
 	width: 100%;
@@ -154,6 +162,13 @@ a {
 	float: right;
 	padding: 6px;
 	height: 10px;
+}
+
+#search-options select{
+   border: 1px solid #ccc;
+   font-size: 16px;
+   height: 20px;
+   width: 100px;
 }
 
 /*smaller devices*/
