@@ -16,6 +16,7 @@ $("#openSearch").click(function() {
 	} else {
 		//search for topic here
 		clear();
+		$("h3").html("search results: "+ $("#searchBar").val());
 		var url = getUrl();
         fillSite(url);
 	}
@@ -25,6 +26,7 @@ $("#openSearch").click(function() {
 $('#searchBar').bind('keypress', function(e) {
 	if (e.keyCode==13) {
 		clear();
+		$("h3").html("search result: "+ $("#searchBar").val());
 		var url = getUrl();
         fillSite(url);
 	}
