@@ -8,18 +8,56 @@ body {
 	font-family: 'Roboto', sans-serif;
 }
 
-/* Menu bar */
-header {
-	box-sizing: border-box;
+
+
+#main_title{
 	width:100%;
-	height: 70px;
+	top: 0px;
 	position: fixed;
-	background: #0DA0FF;
-	padding-top: 10px;
-	padding-bottom: 15px;
-	color: white;
+	background-color: #3366ff;
+	overflow: hidden;
+	height: 30px;
 	text-align: center;
-	font-size: 200%;
+	vertical-align: middle;
+	line-height: 30px;  
+}
+
+/* Menu bar */
+.navbar {
+	/*box-sizing: border-box;*/
+	width:100%;
+	/*height: 70px;*/
+	top: 30px;
+	position: fixed;
+	background-color: #0DA0FF;
+	overflow: hidden;
+	/*padding-top: 10px;
+	padding-bottom: 15px;*/
+	/*color: white;*/
+	/*text-align: center;*/
+	/*font-size: 200%;*/
+}
+
+#openSide{
+	float: left;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 10px 20px;
+	/*font-size: 5px;*/
+	display: block;
+}
+
+.navbar a{
+	float: left;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 20px 20px;
+	font-size: 17px;
+	display: block;
+}
+
+p {
+	height
 }
 
 a {
@@ -28,14 +66,14 @@ a {
 }
 
 /* button that opens side nav */
-#openSide {
+/*#openSide {
 	position: absolute;
 	padding-left: 8px;
 	padding-top: 8px;
-}
+}*/
 
 ::-webkit-scrollbar {
-    width: 0px;
+    width: 0px;   
 }
 
 /* side menu */
@@ -97,14 +135,16 @@ input[type=text] {
 }
 
 .articles {
-	margin: 0 auto;
+	/*margin: 0 auto;*/
 	margin-top: 50px;
-	position: absolute;
+	margin-left: 10%;
+	margin-right: 10%;
+	/*position: relative;*/
 	background-color: white;
 	width: 100%;
 	/*margin: 200px;*/
-	padding-top: 40px;
-	padding-left:100px;
+	padding-top: 60px;
+	/*padding-left:100px;*/
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap
