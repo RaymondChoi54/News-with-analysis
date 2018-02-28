@@ -1,5 +1,11 @@
 "use strict";
 
+ $(window).scroll(function () {
+    if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
+        moreArticles()
+    }
+ });
+
 //toggle side navigation
 $("#openSide").click(function(){
         $("#Sidenav").css("width","250px");
@@ -112,7 +118,7 @@ function moreArticles() {
     var page = num_art / parseInt(limit) + 1
     var url = "https://newsapi.org/v2/everything?language=" + lang + "&sortBy=" + sort + "&pageSize=" + limit + "&page=" + page + "&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77";
     if(topic == "") {
-        url = 'https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77';
+        return
     }
     console.log(url)
     $.ajax({
