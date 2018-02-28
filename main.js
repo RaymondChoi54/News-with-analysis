@@ -98,15 +98,16 @@ function fillSite(url) {
                 var contain = document.createElement("div");
                 var img = document.createElement("img");
                 img.src = item.urlToImage;
-                img.style.width = "80px";
-                img.style.height = "80px";
+                img.style.width = "250px";
+                img.style.height = "200px";
                 article.appendChild(contain);
                 contain.classList.add("thumbnail");
 
                 contain.appendChild(img);
 
-                $(".thumbnail img").css("width", "100%");
-                $(".thumbnail img").css("height","200px");
+                $(".thumbnail img").css("width", "250px");
+                $(".thumbnail img").css("height", "200px");
+                // $(".thumbnail img").css("border-radius","2%");
 
                 // Add title
                 var title = document.createElement("p");
@@ -117,7 +118,11 @@ function fillSite(url) {
 
                 // Add data
                 var data = document.createElement("p");
-                var t = document.createTextNode("Published: " + item.publishedAt + " By: " + item.author);
+                var author = item.author
+                if(author == null) {
+                    author = "Unknown"
+                }
+                var t = document.createTextNode("Published: " + item.publishedAt + " By: " + author);
                 data.appendChild(t);
                 data.classList.add("data");   
                 article.appendChild(data);
