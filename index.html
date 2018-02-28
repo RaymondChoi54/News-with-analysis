@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>News Title</title>
         <link rel="stylesheet" type="text/css" 
         href="style.css">
         <link rel="stylesheet" type="text/css"
@@ -9,34 +10,60 @@
     </head>
 
     <body>
-        <div id="main_title">
-            Website Title
-        </div>
+    	<header>
+    		<span>news <b>IT</b></span>
+    	</header>
+		<div class="articles"></div>
+    	<div id="openSide"><img src="images/ic_menu_white.png" width="40"></div>
+    	<input id="searchBar" type="text" placeholder="Search topic" value=""></input>
 
-        <div class="navbar">
-            <div id="openSide"><img src="images/ic_menu_white.png" width="40"></div>
-            <a href="">Home</a>
-            <a href="#login" id="login_button">Login</a> 
-            <a href="#saved" id="saved_button">Saved</a>
-            <input id="searchBar" type="text" placeholder="Search topic" value=""></input>
-            <div id="openSearch"> <img src="images/ic_search_white.png" width="40"> </div>
+		<div id="openSearch"> <img src="images/ic_search_white.png" width="40"> </div>
+    	<div id="Sidenav" class="sidenav">
+		  <a href="javascript:void(0)" class="closebtn">&times;</a>
+		  <a href="#search" id="search_button">Search</a>
+		  <a href="#saved" id="saved_button">Saved Topics</a>
+		  <a href="#login" id="login_button">Login</a>
+		  <a href="#logout" id="logout_button">Logout</a>
+		</div>
+		<h3>top headlines</h3>
+		<div id="advanced_search">advanced search</div>
+		<div id="search-options">
+			<form>
+			    <li><label>
+			    	sort by: 
+			      <select id="sort-by">
+					  <option value="publishedAt">Date</option>
+					  <option value="relevancy">Relevancy</option>
+					  <option value="popularity">Popularity</option>
+					</select>
+			    </label>
+			</li>
+			<li>
+			 	<label>
+			     	language: 
+			    <select id="language">
+			    	<option value=en>English</option>
+			    	<option value=ar>Arabic</option>
+			    	<option value=de>German</option>
+			        <option value=es>Spanish</option>
+					<option value=fr>French</option>
+					<option value=it>Italian</option>
+					<option value=zh>Chinese</option>
+				</select>
+			    </label>
+			</li>
+			<li>
+			    <label>
+			      limit:
+			      <input id="limit" size="10" type="text" value=""></input>
+			    </label>
+			</li>
+			</form>
+		</div>
 
-        </div>
-        <div class="container">
-        <div class="articles"></div>
-
-        <div id="openSide"><img src="images/ic_menu_white.png" width="40"></div>
-        <div id="Sidenav" class="sidenav">
-          <a href="javascript:void(0)" class="closebtn">&times;</a>
-          <a href="#search" id="search_button">Search</a>
-          <a href="#saved" id="saved_button">Saved Topics</a>
-          <a href="#login" id="login_button">Login</a>
-          <a href="#logout" id="logout_button">Logout</a>
-        </div>
-        
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="main.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="main.js"></script>
     </body>
 
-</html>  
+</html>   
