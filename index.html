@@ -3,6 +3,7 @@
     <head>
     	<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>News Title</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" 
         href="style.css">
         <link rel="stylesheet" type="text/css"
@@ -25,9 +26,10 @@
 		  <a href="#login" id="login_button">Login</a>
 		  <a href="#logout" id="logout_button">Logout</a>
 		</div>
-		<h3>top headlines</h3>
+		<h3><b>top headlines</b>
+		</h3>
 		<div id="advanced_search">advanced search</div>
-		<div id="search-options">
+		<div id="search-options" class="panel panel-default">
 			<form>
 			    <li><label>
 			    	sort by: 
@@ -55,12 +57,11 @@
 			<li>
 			    <label>
 			      limit:
-			      <input id="limit" size="10" type="text" value=""></input>
+			      <input id="limit" size="18" type="text" value=""></input>
 			    </label>
 			</li>
 			</form>
 		</div>
-
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="main.js"></script>

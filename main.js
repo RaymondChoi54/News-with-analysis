@@ -6,6 +6,8 @@
     }
  });
 
+
+
 //toggle side navigation
 $("#openSide").click(function(){
         $("#Sidenav").css("width","250px");
@@ -15,6 +17,9 @@ $(".closebtn").click(function(){
         $("#Sidenav").css("width","0px");
 });
 
+$("#btn btn-info btn-lg").click(function(){
+	//display topics
+});
 //toggle search bar
 $("#openSearch").click(function() {
     if ($("#searchBar").css("display") == "none") {
@@ -22,7 +27,8 @@ $("#openSearch").click(function() {
     } else {
         //search for topic here
         clear();
-        $("h3").html("search results: "+ $("#searchBar").val());
+        $("h3").html("<b>search results: "+ $("#searchBar").val() + "</b>" + 
+        	"<a href='#' class='btn btn-info btn-lg'><span class='glyphicon glyphicon-plus'></span>add topic</a>");
         var url = getUrl();
         fillSite(url);
     }
@@ -32,7 +38,8 @@ $("#openSearch").click(function() {
 $('#searchBar').bind('keypress', function(e) {
     if (e.keyCode==13) {
         clear();
-        $("h3").html("search results: "+ $("#searchBar").val());
+        $("h3").html("<b>search results: "+ $("#searchBar").val() + "</b>" + 
+        	"<a href='#' class='btn btn-info btn-lg'><span class='glyphicon glyphicon-plus'></span>add topic</a>");
         var url = getUrl();
         fillSite(url);
     }
@@ -42,13 +49,13 @@ $('#searchBar').bind('keypress', function(e) {
 $('#saved_button').click(function() {
     //saved topics
     clear();
-    $("h3").html("saved topics");
+    $("h3").html("<b>saved topics</b>");
 });
 
 $('#login_button').click(function() {
     //login page
     clear();
-    $("h3").html("login");
+    $("h3").html("<b>login</b>");
 });
 
 $('#logout_button').click(function() {
@@ -58,7 +65,7 @@ $('#logout_button').click(function() {
 
 $("#search_button").click(function() {
         clear();
-        $("h3").html("top headlines");
+        $("h3").html("<b>top headlines</b>");
         fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 });
 
@@ -89,6 +96,7 @@ function getUrl() {
 
 function clear() {
     $("h3").html("");
+    $("#listTopics").html("");
     document.getElementsByClassName("articles")[0].innerHTML = "";
 }
 
