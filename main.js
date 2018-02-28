@@ -1,5 +1,6 @@
 "use strict";
 
+var saved_topics = [];
  $(window).scroll(function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
         moreArticles()
@@ -17,8 +18,15 @@ $(".closebtn").click(function(){
         $("#Sidenav").css("width","0px");
 });
 
-$("#btn btn-info btn-lg").click(function(){
+//add topics to saved_topic list
+$(".btn").click(function(){
 	//display topics
+	var topic= $("#searchBar").val();
+	console.log(topic);
+	if (!saved_topics.includes(topic)) {
+		saved_topics.push(topic);
+	}
+	console.log(saved_topics.length);
 });
 //toggle search bar
 $("#openSearch").click(function() {
@@ -27,8 +35,8 @@ $("#openSearch").click(function() {
     } else {
         //search for topic here
         clear();
-        $("h3").html("<b>search results: "+ $("#searchBar").val() + "</b>" + 
-        	"<a href='#' class='btn btn-info btn-lg'><span class='glyphicon glyphicon-plus'></span>add topic</a>");
+        $("h3 > b").html("search results: "+ $("#searchBar").val());
+        $('.btn.btn-info.btn-md').show();
         var url = getUrl();
         fillSite(url);
     }
@@ -38,8 +46,8 @@ $("#openSearch").click(function() {
 $('#searchBar').bind('keypress', function(e) {
     if (e.keyCode==13) {
         clear();
-        $("h3").html("<b>search results: "+ $("#searchBar").val() + "</b>" + 
-        	"<a href='#' class='btn btn-info btn-lg'><span class='glyphicon glyphicon-plus'></span>add topic</a>");
+        $("h3 > b").html("search results: "+ $("#searchBar").val());
+        $('.btn.btn-info.btn-md').show();
         var url = getUrl();
         fillSite(url);
     }
@@ -49,13 +57,16 @@ $('#searchBar').bind('keypress', function(e) {
 $('#saved_button').click(function() {
     //saved topics
     clear();
-    $("h3").html("<b>saved topics</b>");
+    $("h3 > b").html("saved topics");
+	for (let i = 0;i<saved_topics.length;i++) {
+		$("#listTopics").append('<a href="#" class="list-group-item">' + saved_topics[i] +'</a>');
+	}
 });
 
 $('#login_button').click(function() {
     //login page
     clear();
-    $("h3").html("<b>login</b>");
+    $("h3 > b").html("login");
 });
 
 $('#logout_button').click(function() {
@@ -65,7 +76,7 @@ $('#logout_button').click(function() {
 
 $("#search_button").click(function() {
         clear();
-        $("h3").html("<b>top headlines</b>");
+        $("h3 > b").html("top headlines");
         fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 });
 
@@ -79,6 +90,7 @@ $("#advanced_search").click(function() {
 
 $(window).bind("load", function() {
     $('#search-options').hide();
+    $('.btn.btn-info.btn-md').hide();
     fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 });
 
@@ -95,8 +107,9 @@ function getUrl() {
 }
 
 function clear() {
-    $("h3").html("");
+    $("h3 > b").html("");
     $("#listTopics").html("");
+    $('.btn.btn-info.btn-md').hide();
     document.getElementsByClassName("articles")[0].innerHTML = "";
 }
 
