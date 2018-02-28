@@ -1,13 +1,14 @@
 "use strict";
 
 //Dictionary containing endpoint and authentication for Watson natural language API
-var watson = {
+//IGNORE
+/*var watson = {
     url: 'https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=',//Broward%20sheriff%20investigating%20claims%20that%20multiple%20deputies%20failed%20to%20enter%20Parkland%20school%20when%20they%20should%20have&features=sentiment,keywords',
     auth: {
         'user': '3da0d8c3-8b65-45ce-896a-a3cd30dd1750',
         'pass': 'SsNBdyXZ6HDG'
     }
-};
+};*/
 
 //toggle side navigation
 $("#openSide").click(function(){
@@ -20,12 +21,15 @@ $(".closebtn").click(function(){
 
 //toggle search bar
 $("#openSearch").click(function() {
+    //alert("hello");
     if ($("#searchBar").css("display") == "none") {
+        alert("asdf");
         $("#searchBar").css("display", "block");
     } else {
         //search for topic here
+        clear();
         var topic = $("#searchBar").val();
-        fillSite('https://newsapi.org/v2/everything?language=en&q=' + topic + '&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
+        fillSite('https://newsapi.org/v2/everything?language=en&sortBy=popularity&q=' + topic + '&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
     }
 });
 
@@ -70,6 +74,93 @@ function clear() {
     document.getElementsByClassName("articles")[0].innerHTML = "";
 }
 
+
+function makeBaseAuth(user, pswd){
+    var token = user + ':' + pswd;
+    var hash = "";
+    if (btoa) {
+       hash = btoa(token);
+    }
+    return "Basic " + hash;
+}
+
+
+
+function fillSite(url) {
+    $.ajax({
+        type:'GET',
+        url:url,
+        success:function(data) {
+            console.log(data);
+            $.each(data.articles, function(i, item) {
+                // Create article
+                var article = document.createElement("div");
+                article.classList.add("article");  
+                document.getElementsByClassName("articles")[0].appendChild(article);
+
+                // Add image
+                var contain = document.createElement("div");
+                var img = document.createElement("img");
+                
+                //img.classList.add("thumbs")
+                img.src = item.urlToImage;
+                //img.style.width = "80px";
+                //img.style.height = "80px";
+                article.appendChild(contain);
+                contain.classList.add("thumbnail");
+
+                contain.appendChild(img);
+
+                $(".thumbnail img").css("width", "100%");
+                $(".thumbnail img").css("height","200px");
+
+
+                var t = document.createTextNode(item.title)
+                // Add title
+                var title = document.createElement("p");
+
+                
+                //analyzeSentiment(item.title);
+                title.appendChild(t)
+                title.classList.add("title");   
+                article.appendChild(title);
+
+                // Add data
+                var data = document.createElement("p");
+                var t = document.createTextNode("Published: " + item.publishedAt + " By: " + item.author);
+                data.style.fontSize = "10px";
+                data.appendChild(t);
+                data.classList.add("data");   
+                article.appendChild(data);
+
+                // Add description
+                var description = document.createElement("p");
+
+                var t = document.createTextNode(item.description);
+                description.appendChild(t);  
+                description.classList.add("description");  
+                description.classList.add("p" + i);  
+                article.appendChild(description);
+
+                // Show description
+                $(".p" + i).hide();
+                // title.addEventListener("click", function(e) {
+                //     $(".p" + i).toggle();
+                // }, false);
+                title.onclick = function() {
+                    $(".p" + i).toggle();
+                }
+            })
+        }
+    });
+
+
+}
+
+
+
+
+//IGNORE
 /*function analyzeSentiment(textString){
     var encodedText = encodeURI(textString);
 
@@ -95,7 +186,9 @@ function clear() {
 
 }*/
 
-function analyzeSentiment(textString){
+
+//IGNORE
+/*function analyzeSentiment(textString){
     //encode the string by replacing spaces, etc. with ASCII codes
     var encodedText = encodeURI(textString);
 
@@ -123,75 +216,4 @@ function analyzeSentiment(textString){
     });
 
 
-}
-
-function makeBaseAuth(user, pswd){
-    var token = user + ':' + pswd;
-    var hash = "";
-    if (btoa) {
-       hash = btoa(token);
-    }
-    return "Basic " + hash;
-}
-
-
-
-function fillSite(url) {
-    $.ajax({
-        type:'GET',
-        url:url,
-        success:function(data) {
-            $.each(data.articles, function(i, item) {
-                // Create article
-                var article = document.createElement("div");
-                article.classList.add("article");  
-                document.getElementsByClassName("articles")[0].appendChild(article);
-
-                // Add image
-                var contain = document.createElement("div");
-                var img = document.createElement("img");
-                //img.classList.add("thumbs")
-                img.src = item.urlToImage;
-                //img.style.width = "80px";
-                //img.style.height = "80px";
-                article.appendChild(contain);
-                contain.classList.add("thumbnail");
-                contain.appendChild(img);
-
-                // Add title
-                var title = document.createElement("p");
-                //analyzeSentiment(item.title);
-                var t = document.createTextNode(item.title);
-                title.appendChild(t);
-                title.classList.add("title");   
-                article.appendChild(title);
-
-                // Add data
-                var data = document.createElement("p");
-                var t = document.createTextNode("Published: " + item.publishedAt + " By: " + item.author);
-                data.appendChild(t);
-                data.classList.add("data");   
-                article.appendChild(data);
-
-                // Add description
-                var description = document.createElement("p");
-                t = document.createTextNode(item.description);
-                description.appendChild(t);  
-                description.classList.add("description");  
-                description.classList.add("p" + i);  
-                article.appendChild(description);
-
-                // Show description
-                $(".p" + i).hide();
-                // title.addEventListener("click", function(e) {
-                //     $(".p" + i).toggle();
-                // }, false);
-                title.onclick = function() {
-                    $(".p" + i).toggle();
-                }
-            })
-        }
-    });
-}
-
-
+}*/

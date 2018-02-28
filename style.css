@@ -164,12 +164,14 @@ input[type=text] {
 }
 
 
-
-
-
-.thumbnail img{
-	width: 100%;
+img{
+	max-height: 20%;
 }
+
+
+/*.thumbnail img{
+	width: 100%;
+}*/
 
 /*smaller devices*/
 @media screen and (max-height: 450px) {
