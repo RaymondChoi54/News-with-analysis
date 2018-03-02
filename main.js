@@ -94,6 +94,30 @@ $(window).bind("load", function() {
     fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 });
 
+//highlight thumbnail border when mouse enters
+$(document).on("mouseover",".thumbnail", function(){
+	$(this).css("background-color", "#184496");
+
+})
+
+
+$(document).on("mouseleave",".thumbnail", function(){
+	$(this).css("background-color", "transparent");
+	
+})
+
+
+/*$(".articles").mouseenter(function () {
+               //$this = $(this);
+              $(this).css("background-color", "blue");
+        }).mouseleave(function ()
+        {
+           // $this = $(this);
+            $(this).css("background-color", "transparent");
+
+        });
+*/
+
 function getUrl() {
     var topic = $("#searchBar").val();
     var sort = $("#sort-by").val();
@@ -170,7 +194,14 @@ function appendArticle(i, item) {
     article.appendChild(contain);
     contain.classList.add("thumbnail");
 
-    contain.appendChild(img);
+    
+    //create anchor with link to news article, opens in new tab
+    var a = document.createElement('a');
+    a.href = item.url;
+    a.target = "_blank";
+
+    a.appendChild(img);
+    contain.appendChild(a);
 
     $(".thumbnail img").css("width", "250px");
     $(".thumbnail img").css("height", "200px");
