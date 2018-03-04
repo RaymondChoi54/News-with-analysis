@@ -7,8 +7,6 @@ var saved_topics = [];
     }
  });
 
-
-
 //toggle side navigation
 $("#openSide").click(function(){
         $("#Sidenav").css("width","250px");
@@ -20,14 +18,15 @@ $(".closebtn").click(function(){
 
 //add topics to saved_topic list
 $(".btn").click(function(){
-	//display topics
-	var topic= $("#searchBar").val();
-	console.log(topic);
-	if (!saved_topics.includes(topic)) {
-		saved_topics.push(topic);
-	}
-	console.log(saved_topics.length);
+    //display topics
+    var topic= $("#searchBar").val();
+    console.log(topic);
+    if (!saved_topics.includes(topic)) {
+        saved_topics.push(topic);
+    }
+    console.log(saved_topics.length);
 });
+
 //toggle search bar
 $("#openSearch").click(function() {
     if ($("#searchBar").css("display") == "none") {
@@ -60,9 +59,9 @@ $('#saved_button').click(function() {
     clear();
     $("#Sidenav").css("width","0px");
     $("h3 > b").html("saved topics");
-	for (let i = 0;i<saved_topics.length;i++) {
-		$("#listTopics").append('<a href="#" class="list-group-item">' + saved_topics[i] +'</a>');
-	}
+    for (let i = 0;i<saved_topics.length;i++) {
+        $("#listTopics").append('<a href="#" class="list-group-item">' + saved_topics[i] +'</a>');
+    }
 });
 
 $('#login_button').click(function() {
@@ -100,14 +99,14 @@ $(window).bind("load", function() {
 
 //highlight thumbnail border when mouse enters
 $(document).on("mouseover",".thumbnail", function(){
-	$(this).css("background-color", "#184496");
+    $(this).css("background-color", "#184496");
 
 })
 
 
 $(document).on("mouseleave",".thumbnail", function(){
-	$(this).css("background-color", "transparent");
-	
+    $(this).css("background-color", "transparent");
+    
 })
 
 
@@ -118,7 +117,6 @@ $(document).on("mouseleave",".thumbnail", function(){
         {
            // $this = $(this);
             $(this).css("background-color", "transparent");
-
         });
 */
 
@@ -175,7 +173,6 @@ function moreArticles() {
         url:url,
         success:function(data) {
             $.each(data.articles, function(i, item) {
-   
                 console.log(i)
                 appendArticle(i * page, item);
             })
@@ -197,19 +194,10 @@ function appendArticle(i, item) {
     img.style.height = "200px";
     article.appendChild(contain);
     contain.classList.add("thumbnail");
-
-    
-    //create anchor with link to news article, opens in new tab
-    var a = document.createElement('a');
-    a.href = item.url;
-    a.target = "_blank";
-
-    a.appendChild(img);
-    contain.appendChild(a);
-
-    $(".thumbnail img").css("width", "250px");
-    $(".thumbnail img").css("height", "200px");
-    // $(".thumbnail img").css("border-radius","2%");
+    contain.appendChild(img);
+    img.onclick = function() {
+        on(item)
+    }
 
     // Add title
     var title = document.createElement("p");
@@ -217,32 +205,47 @@ function appendArticle(i, item) {
     title.appendChild(t);
     title.classList.add("title");   
     article.appendChild(title);
+}
 
-    // Add data
+function on(article) {
+    var moreInfo = document.getElementById("info");
+    document.getElementById("overlay").style.display = "block";
+    moreInfo.style.display = "block";
+    // Title
+    var title = document.createElement("p");
+    var t = document.createTextNode(article.title);
+    title.appendChild(t);
+    title.classList.add("overlayTitle");   
+    moreInfo.appendChild(title);
+    // Larger image
+    var appendImg = document.createElement("img");
+    appendImg.src = article.urlToImage;
+    appendImg.classList.add("infoImg");
+    var a = document.createElement('a');
+    a.href = article.url;
+    a.target = "_blank";
+    a.appendChild(appendImg);
+    moreInfo.appendChild(a)
+    // Author and publish date
     var data = document.createElement("p");
-    var author = item.author
+    var author = article.author
     if(author == null) {
         author = "Unknown"
     }
-    var t = document.createTextNode("Published: " + item.publishedAt + " By: " + author);
+    var t = document.createTextNode("Published: " + article.publishedAt + " By: " + author);
     data.appendChild(t);
     data.classList.add("data");   
-    article.appendChild(data);
-
-    // Add description
+    moreInfo.appendChild(data);
+    // Description
     var description = document.createElement("p");
-    t = document.createTextNode(item.description);
+    t = document.createTextNode(article.description);
     description.appendChild(t);  
-    description.classList.add("description");  
-    description.classList.add("p" + i);  
-    article.appendChild(description);
+    description.classList.add("description"); 
+    moreInfo.appendChild(description);
+}
 
-    // Show description
-    $(".p" + i).hide();
-    // title.addEventListener("click", function(e) {
-    //     $(".p" + i).toggle();
-    // }, false);
-    title.onclick = function() {
-        $(".p" + i).toggle();
-    }
+function off() {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("info").style.display = "none";
+    document.getElementById("info").innerHTML = "";
 }
