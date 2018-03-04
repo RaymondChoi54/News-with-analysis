@@ -46,6 +46,7 @@ $("#openSearch").click(function() {
 $('#searchBar').bind('keypress', function(e) {
     if (e.keyCode==13) {
         clear();
+        $("#Sidenav").css("width","0px");
         $("h3 > b").html("search results: "+ $("#searchBar").val());
         $('.btn.btn-info.btn-md').show();
         var url = getUrl();
@@ -57,6 +58,7 @@ $('#searchBar').bind('keypress', function(e) {
 $('#saved_button').click(function() {
     //saved topics
     clear();
+    $("#Sidenav").css("width","0px");
     $("h3 > b").html("saved topics");
 	for (let i = 0;i<saved_topics.length;i++) {
 		$("#listTopics").append('<a href="#" class="list-group-item">' + saved_topics[i] +'</a>');
@@ -66,6 +68,7 @@ $('#saved_button').click(function() {
 $('#login_button').click(function() {
     //login page
     clear();
+    $("#Sidenav").css("width","0px");
     $("h3 > b").html("login");
 });
 
@@ -76,6 +79,7 @@ $('#logout_button').click(function() {
 
 $("#search_button").click(function() {
         clear();
+        $("#Sidenav").css("width","0px");
         $("h3 > b").html("top headlines");
         fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 });
