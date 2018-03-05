@@ -28,11 +28,9 @@ $(".closebtn").click(function(){
 $(".btn").click(function(){
     //display topics
     var topic= $("#searchBar").val();
-    console.log(topic);
     if (!saved_topics.includes(topic)) {
         saved_topics.push(topic);
     }
-    console.log(saved_topics.length);
 });
 
 //toggle search bar
@@ -67,9 +65,9 @@ $('#saved_button').click(function() {
     clear();
     $("#Sidenav").css("width","0px");
     $("h3 > b").html("Saved Topics:");
-	for (let i = 0;i<saved_topics.length;i++) {
-		$("#listTopics").append('<a href="#" class="list-group-item">' + saved_topics[i] +'</a>');
-	}
+    for (let i = 0; i < saved_topics.length; i++) {
+        $("#listTopics").append('<a href="#" class="list-group-item">' + saved_topics[i] +'</a>');
+    }
 });
 
 $('#signup_button').click(function() {
@@ -110,13 +108,13 @@ $("#search_button").click(function() {
 });
 
 function home() {
-	clear();
+    clear();
     $("#Sidenav").css("width","0px");
     $("h3 > b").html("Top Headlines:");
     document.getElementById("usernameHidden").hidden = false;
     document.getElementById("usernameHidden").innerText = getUsername();
     document.getElementById("usernameHidden").hidden = false;
-	fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
+    fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 
 }
 
@@ -163,27 +161,28 @@ function getUrl() {
     if (limit == "") {
         limit = 20;
     }
-    console.log(limit)
     return "https://newsapi.org/v2/everything?language=" + lang + "&sortBy=" + sort + "&pageSize=" + limit + "&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77";
 }
 
 function clear() {
     $("h3 > b").html("");
     $(".loginClass").hide();
-    $(".signupClass").hide();	
+    $(".signupClass").hide();   
     $("#listTopics").html("");
     $('.btn.btn-info.btn-md').hide();
     document.getElementsByClassName("articles")[0].innerHTML = "";
+    document.getElementById("articleContents").style.display = "none";
 }
 
 //fill page with articles
 function fillSite(url) {
+    document.getElementById("articleContents").style.display = "block";
     $.ajax({
         type:'GET',
         url:url,
         success:function(data) {
             $.each(data.articles, function(i, item) {
-                appendArticle(i, item);
+                appendArticle(item);
             })
         }
     });
@@ -204,20 +203,18 @@ function moreArticles() {
     if(topic == "") {
         return
     }
-    console.log(url)
     $.ajax({
         type:'GET',
         url:url,
         success:function(data) {
             $.each(data.articles, function(i, item) {
-                console.log(i)
-                appendArticle(i * page, item);
+                appendArticle(item);
             })
         }
     });
 }
 
-function appendArticle(i, item) {
+function appendArticle(item) {
     // Create article
 
 
@@ -263,7 +260,7 @@ function appendArticle(i, item) {
 
 
     th_up.src = "images/thumbs_up.png";
-    th_down.src = "images/thumbs_down.png"
+    th_down.src = "images/thumbs_down.png";
 
     thumbs_div.appendChild(th_up);
     thumbs_div.appendChild(p1);
@@ -274,10 +271,8 @@ function appendArticle(i, item) {
 
     /*$(".td").css('display','inline-block');
     //
-
     $(.td).append("<img src='images/thumbs_up.png'/>");
     $(thumbs_div).append("<p>50%</p>");
-
     $(thumbs_div).append("<img src='images/thumbs_down.png'/>");
     $(thumbs_div).append("<p>50%</p>");
 */
@@ -285,52 +280,52 @@ function appendArticle(i, item) {
     //thumbs_div.classList.add("thumbs");
     //SENTIMENT ANALYSIS
     //call the analyze function and pass a callback function which will update the DOM once score arrives
-    analyzeSentiment(item.title, function(val){
-    	var sentimentInfo = document.createElement("p");
-    	
-    	var s;
-    	if(val < -0.2){
-    		s = document.createTextNode("Negative sentiment");
-    		sentimentInfo.classList.add("negative_sentiments");
-    	}
-    	else if(val > 0.2){
-    		s = document.createTextNode("Positive sentiment");
-    		sentimentInfo.classList.add("positive_sentiments");
-    	}
-    	else{
-    		s = document.createTextNode("Neutral sentiment");
-    		sentimentInfo.classList.add("neutral_sentiments");
-    	}
-    	sentimentInfo.appendChild(s);
+    analyzeSentiment(item.title, function(val) {
+        var sentimentInfo = document.createElement("p");
+        
+        var s;
+        if(val < -0.2){
+            s = document.createTextNode("Negative sentiment");
+            sentimentInfo.classList.add("negative_sentiments");
+        }
+        else if(val > 0.2){
+            s = document.createTextNode("Positive sentiment");
+            sentimentInfo.classList.add("positive_sentiments");
+        }
+        else{
+            s = document.createTextNode("Neutral sentiment");
+            sentimentInfo.classList.add("neutral_sentiments");
+        }
+        sentimentInfo.appendChild(s);
 
-    	//color the text based on sentiment
-    	$(".positive_sentiments").css({color:"green",fontSize:"18px"});
-    	$(".negative_sentiments").css({color:"red",fontSize:"18px"});
-    	$(".neutral_sentiments").css({color:"black",fontSize:"18px"});
-    	
-    	article.appendChild(sentimentInfo);
+        //color the text based on sentiment
+        $(".positive_sentiments").css({color:"green",fontSize:"18px"});
+        $(".negative_sentiments").css({color:"red",fontSize:"18px"});
+        $(".neutral_sentiments").css({color:"black",fontSize:"18px"});
+        
+        article.appendChild(sentimentInfo);
 
-    	if(val < 0){
-    		val = val * -1.0;
-    		var temp = val + 1.0;
-    		temp = temp/2.0;
-    		p2.innerHTML = (temp*100).toFixed(0) + "%";
-    		var temp2 = 100 - temp*100;
-    		p1.innerHTML = temp2.toFixed(0) + "%";
-    	}
-    	
-    	if(val > 0){
-    		val = val * 1.0;
-    		var temp = val + 1.0;
-    		temp = temp/2.0;
-    		p1.innerHTML = (temp*100).toFixed(0) + "%";
-    		var temp2 = 100 - temp*100;
-    		p2.innerHTML = temp2.toFixed(0) + "%";
-    	}
-    	if(val == 0){
-    		p1.innerHTML = "50%";
-    		p2.innerHTML = "50%";
-    	}
+        if(val < 0){
+            val = val * -1.0;
+            var temp = val + 1.0;
+            temp = temp/2.0;
+            p2.innerHTML = (temp*100).toFixed(0) + "%";
+            var temp2 = 100 - temp*100;
+            p1.innerHTML = temp2.toFixed(0) + "%";
+        }
+        
+        if(val > 0){
+            val = val * 1.0;
+            var temp = val + 1.0;
+            temp = temp/2.0;
+            p1.innerHTML = (temp*100).toFixed(0) + "%";
+            var temp2 = 100 - temp*100;
+            p2.innerHTML = temp2.toFixed(0) + "%";
+        }
+        if(val == 0){
+            p1.innerHTML = "50%";
+            p2.innerHTML = "50%";
+        }
 
 
     });
@@ -400,8 +395,8 @@ function off() {
 }
 
 function analyzeSentiment(headline, callback){
- 	var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
- 	var score = 3;
+    var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
+    var score = 3;
     $.ajax({
         type        : "POST",
         url         : "https://language.googleapis.com/v1/documents:analyzeSentiment?key="+ mykey,
@@ -420,5 +415,3 @@ function analyzeSentiment(headline, callback){
     });
 
 }
-
-
