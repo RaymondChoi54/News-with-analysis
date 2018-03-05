@@ -118,6 +118,14 @@ function home() {
     fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 
 }
+function home2() {
+    clear();
+    $("#Sidenav").css("width","0px");
+    $("h3 > b").html("Top Headlines:");
+    fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
+
+}
+
 
 function getUsername() {
     return ": "+ document.getElementById('usernameText').value + "'s Dashboard";
