@@ -168,6 +168,7 @@ function clear() {
     $(".signupClass").hide();   
     $("#listTopics").html("");
     $('.btn.btn-info.btn-md').hide();
+    $("#search-options").hide();
     document.getElementsByClassName("articles")[0].innerHTML = "";
     document.getElementById("articleContents").style.display = "none";
 }
