@@ -58,7 +58,20 @@ $('#saved_button').click(function() {
     $("#Sidenav").css("width","0px");
     $("h3 > b").html("Saved Topics:");
     for (let i = 0; i < saved_topics.length; i++) {
-        $("#listTopics").append('<a href="#" class="list-group-item">' + saved_topics[i] +'</a>');
+        var btn = document.createElement("button");
+        btn.classList.add("loadSaved")
+        var t = document.createTextNode(saved_topics[i]);
+        btn.onclick = function() {
+            $("#searchBar").val(saved_topics[i])
+            clear();
+            $("#Sidenav").css("width","0px");
+            $("h3 > b").html("search results: "+ $("#searchBar").val());
+            $('.btn.btn-info.btn-md').show();
+            var url = getUrl();
+            fillSite(url);
+        }
+        btn.appendChild(t);      
+        $("#listTopics").append(btn);
     }
 });
 
