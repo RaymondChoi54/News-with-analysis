@@ -267,7 +267,7 @@ h3 {
 	}
 }
 
-/*smaller devices*/
+/*medium devices*/
 @media screen and (max-width: 630px) {
 	.sidenav {padding-top: 15px;}
 	.sidenav a {font-size: 18px;}
@@ -281,4 +281,17 @@ h3 {
 		padding: 14px;
 		display: none;
 	}
+}
+
+/*smaller devices*/
+@media screen and (max-width: 500px) {
+	#info {
+		width: 300px;
+		height: 350px;
+	}
+	.infoImg {
+		width: 250px;
+		height: 200px;
+	}
+
 }
