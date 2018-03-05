@@ -8,6 +8,24 @@ body {
 	font-family: 'Roboto', sans-serif, Arial, Helvetica;
 }
 
+.list-group {
+	display: flex;
+ 	justify-content: center;
+ 	flex-direction: column;
+}
+
+.loadSaved {
+    background-color: #06709e;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    margin: 5px auto;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
 .btn {
 	margin-left: 5px;
 	margin-bottom: 5px;
