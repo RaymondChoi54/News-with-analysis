@@ -67,8 +67,6 @@ $('#signup_button').click(function() {
     clear();
     $("#Sidenav").css("width","0px");
     $(".signupClass").show();
-
-
 });
 
 
@@ -77,8 +75,6 @@ $('#login_button').click(function() {
     clear();
     $("#Sidenav").css("width","0px");
     $(".loginClass").show();
-
-
 });
 
 
@@ -205,8 +201,6 @@ function moreArticles() {
 
 function appendArticle(item) {
     // Create article
-
-
     var article = document.createElement("div");
     article.classList.add("article");  
     document.getElementsByClassName("articles")[0].appendChild(article);
@@ -223,10 +217,16 @@ function appendArticle(item) {
     img.onclick = function() {
         on(item)
     }
+    $(img).on('error', function(e) {
+        img.src = "images/favicon.png";
+    });
 
     // Add title
     var title = document.createElement("p");
     var t = document.createTextNode(item.title);
+    title.appendChild(t);
+    title.classList.add("title");   
+    article.appendChild(title);
 
 
     var p1 = document.createElement("p");
@@ -243,6 +243,10 @@ function appendArticle(item) {
 
     th_up.src = "images/thumbs_up.png";
     th_down.src = "images/thumbs_down.png";
+    th_up.style.height = "25px";
+    th_up.style.width = "25px";
+    th_down.style.height = "25px";
+    th_down.style.width = "25px";
 
     thumbs_div.appendChild(th_up);
     thumbs_div.appendChild(p1);
@@ -251,31 +255,7 @@ function appendArticle(item) {
     //SENTIMENT ANALYSIS
     //call the analyze function and pass a callback function which will update the DOM once score arrives
     analyzeSentiment(item.title, function(val) {
-        var sentimentInfo = document.createElement("p");
-        
-        var s;
-        if(val < -0.2){
-            s = document.createTextNode("Negative sentiment");
-            sentimentInfo.classList.add("negative_sentiments");
-        }
-        else if(val > 0.2){
-            s = document.createTextNode("Positive sentiment");
-            sentimentInfo.classList.add("positive_sentiments");
-        }
-        else{
-            s = document.createTextNode("Neutral sentiment");
-            sentimentInfo.classList.add("neutral_sentiments");
-        }
-        sentimentInfo.appendChild(s);
-
-        //color the text based on sentiment
-        $(".positive_sentiments").css({color:"green",fontSize:"18px"});
-        $(".negative_sentiments").css({color:"red",fontSize:"18px"});
-        $(".neutral_sentiments").css({color:"black",fontSize:"18px"});
-        
-        article.appendChild(sentimentInfo);
-
-        if(val < 0){
+        if(val < 0) {
             val = val * -1.0;
             var temp = val + 1.0;
             temp = temp/2.0;
@@ -283,8 +263,7 @@ function appendArticle(item) {
             var temp2 = 100 - temp*100;
             p1.innerHTML = temp2.toFixed(0) + "%";
         }
-        
-        if(val > 0){
+        if(val > 0) {
             val = val * 1.0;
             var temp = val + 1.0;
             temp = temp/2.0;
@@ -292,16 +271,11 @@ function appendArticle(item) {
             var temp2 = 100 - temp*100;
             p2.innerHTML = temp2.toFixed(0) + "%";
         }
-        if(val == 0){
+        if(val == 0) {
             p1.innerHTML = "50%";
             p2.innerHTML = "50%";
         }
-
-
     });
-    title.appendChild(t);
-    title.classList.add("title");   
-    article.appendChild(title);
 
     article.appendChild(thumbs_div);
 
@@ -327,6 +301,9 @@ function on(article) {
     a.target = "_blank";
     a.appendChild(appendImg);
     moreInfo.appendChild(a)
+    $(appendImg).on('error', function(e) {
+        appendImg.src = "images/favicon.png";
+    });
     // Author and publish date
     var data = document.createElement("p");
     var author = article.author
@@ -339,7 +316,11 @@ function on(article) {
     moreInfo.appendChild(data);
     // Description
     var description = document.createElement("p");
-    t = document.createTextNode(article.description);
+    var text = article.description
+    if(text == null) {
+        text = "No description available"
+    }
+    t = document.createTextNode(text);
     description.appendChild(t);  
 
     description.classList.add("description"); 
@@ -350,10 +331,9 @@ function off() {
     document.getElementById("overlay").style.display = "none";
     document.getElementById("info").style.display = "none";
     document.getElementById("info").innerHTML = "";
-
 }
 
-function analyzeSentiment(headline, callback){
+function analyzeSentiment(headline, callback) {
     var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
     var score = 3;
     $.ajax({
@@ -361,14 +341,11 @@ function analyzeSentiment(headline, callback){
         url         : "https://language.googleapis.com/v1/documents:analyzeSentiment?key="+ mykey,
         contentType : "application/json",
         data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline+'"}}',
-        success     : function(data_){
-            
+        success     : function(data_) {
             score = data_.documentSentiment.score;
-            
             callback(score);
-            
         },
-        error       : function(err){
+        error       : function(err) {
             console.log(err);
         }
     });
