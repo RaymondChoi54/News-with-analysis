@@ -205,6 +205,46 @@ function appendArticle(i, item) {
     var t = document.createTextNode(item.title);
 
 
+    var p1 = document.createElement("p");
+    var p2 = document.createElement("p");
+    //var pos_percent = document.createTextNode("50%")
+    //var neg_percent = document.createTextNode("50%")
+    p1.innerHTML = "50%";
+    p2.innerHTML = "50%";
+
+    //p1.appendChild(pos_percent);
+    //p2.appendChild(neg_percent);
+
+    var thumbs_div = document.createElement("div");
+    thumbs_div.classList.add("td");
+    //$(".td").css('display','inline-block');
+    //$(".td").css('float','left');
+
+    var th_up = document.createElement("img");
+    var th_down = document.createElement("img");
+
+
+    th_up.src = "images/thumbs_up.png";
+    th_down.src = "images/thumbs_down.png"
+
+    thumbs_div.appendChild(th_up);
+    thumbs_div.appendChild(p1);
+    thumbs_div.appendChild(th_down);
+    thumbs_div.appendChild(p2);
+
+    //$(".td").css('float','left');
+
+    /*$(".td").css('display','inline-block');
+    //
+
+    $(.td).append("<img src='images/thumbs_up.png'/>");
+    $(thumbs_div).append("<p>50%</p>");
+
+    $(thumbs_div).append("<img src='images/thumbs_down.png'/>");
+    $(thumbs_div).append("<p>50%</p>");
+*/
+    
+    //thumbs_div.classList.add("thumbs");
     //SENTIMENT ANALYSIS
     //call the analyze function and pass a callback function which will update the DOM once score arrives
     analyzeSentiment(item.title, function(val){
@@ -212,15 +252,15 @@ function appendArticle(i, item) {
     	
     	var s;
     	if(val < -0.2){
-    		s = document.createTextNode("Negative sentiment ("+val+")");
+    		s = document.createTextNode("Negative sentiment");
     		sentimentInfo.classList.add("negative_sentiments");
     	}
     	else if(val > 0.2){
-    		s = document.createTextNode("Positive sentiment ("+val+")");
+    		s = document.createTextNode("Positive sentiment");
     		sentimentInfo.classList.add("positive_sentiments");
     	}
     	else{
-    		s = document.createTextNode("Neutral sentiment ("+val+")");
+    		s = document.createTextNode("Neutral sentiment");
     		sentimentInfo.classList.add("neutral_sentiments");
     	}
     	sentimentInfo.appendChild(s);
@@ -232,12 +272,48 @@ function appendArticle(i, item) {
     	
     	article.appendChild(sentimentInfo);
 
+    	if(val < 0){
+    		val = val * -1.0;
+    		var temp = val + 1.0;
+    		temp = temp/2.0;
+    		p2.innerHTML = (temp*100).toFixed(0) + "%";
+    		var temp2 = 100 - temp*100;
+    		p1.innerHTML = temp2.toFixed(0) + "%";
+    	}
+    	
+    	if(val > 0){
+    		val = val * 1.0;
+    		var temp = val + 1.0;
+    		temp = temp/2.0;
+    		p1.innerHTML = (temp*100).toFixed(0) + "%";
+    		var temp2 = 100 - temp*100;
+    		p2.innerHTML = temp2.toFixed(0) + "%";
+    	}
+    	if(val == 0){
+    		p1.innerHTML = "50%";
+    		p2.innerHTML = "50%";
+    	}
+
+
     });
+
+    /*var thumbs_up = document.createElement("img");
+    var thumbs_down = document.createElement("img");
+    thumbs_up.src = "images/thumbs_up.png";
+    thumbs_down.src = "images/thumbs_down.png";
+    thumbs_up.setAttribute('class','thumbs_img');
+    thumbs_down.setAttribute('class','thumbs_img');*/
+
+
 
 
     title.appendChild(t);
     title.classList.add("title");   
     article.appendChild(title);
+
+    article.appendChild(thumbs_div);
+
+    $(".td img, .td p").css('display', 'inline-block')
 }
 
 function on(article) {
