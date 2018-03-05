@@ -5,7 +5,27 @@
 
 body {
 	margin-top: 0;
-	font-family: 'Roboto', sans-serif, Arial, Helvetica,;
+	font-family: 'Roboto', sans-serif, Arial, Helvetica;
+}
+
+.btn {
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+
+.thumbnail {
+	margin: 0;
+	margin-bottom: 3px;
+}
+
+.td {
+	float: right;
+}
+
+.title {
+	margin: 0;
+	margin-bottom: 3px;
+	padding: 0px;
 }
 
 #overlay {
@@ -202,13 +222,8 @@ h3 {
 }
 
 .article {
-	/*position: fixed;*/
-	/*margin-top: 100px;*/
 	width: 250px;
 	padding: 5px;
-	
-	/*border-style: solid;
-	border-width: 0.5px;*/
 	overflow: auto;
 }
 
@@ -359,7 +374,7 @@ form button {
   cursor: pointer;
   font-size: 18px;
   -webkit-transition-duration: 0.25s;
-          transition-duration: 0.25s;
+  transition-duration: 0.25s;
 }
 form button:hover {
   background-color: #f5f7f9;
