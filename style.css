@@ -260,18 +260,25 @@ h3 {
    color: gray;
 }
 
-/*smaller devices*/
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+/*larger devices*/
+@media screen and (min-width: 1300px) {
+	.articles {
+		width: 1000px;
+	}
+}
 
-  #searchBar {
-  	float: none;
-    display: block;
-    text-align: left;
-    width: 70%;
-    margin: 8px;
-    padding: 14px;
-    display: none;
-  }
+/*smaller devices*/
+@media screen and (max-width: 630px) {
+	.sidenav {padding-top: 15px;}
+	.sidenav a {font-size: 18px;}
+
+	#searchBar {
+		float: none;
+		display: block;
+		text-align: left;
+		width: 70%;
+		margin: 8px;
+		padding: 14px;
+		display: none;
+	}
 }
