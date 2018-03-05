@@ -1,13 +1,5 @@
 "use strict";
-
-var watson = {
-    url: 'https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=',//Broward%20sheriff%20investigating%20claims%20that%20multiple%20deputies%20failed%20to%20enter%20Parkland%20school%20when%20they%20should%20have&features=sentiment,keywords',
-    auth: {
-        'user': '3da0d8c3-8b65-45ce-896a-a3cd30dd1750',
-        'pass': 'SsNBdyXZ6HDG'
-    }
-};
-
+//list of topics saved
 var saved_topics = [];
  $(window).scroll(function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
@@ -59,7 +51,7 @@ $('#searchBar').bind('keypress', function(e) {
     }
 });
 
-//Replace page with content
+//Replace page with list of topics
 $('#saved_button').click(function() {
     //saved topics
     clear();
@@ -120,9 +112,6 @@ function home() {
 
 function getUsername() {
     return ": "+ document.getElementById('usernameText').value + "'s Dashboard";
-    // var username = document.getElementById('usernameText').value;
-    //    var valuetext = ": " + username + "'s Dashboard";
-    //    return valuetext;
 }
 
 $("#advanced_search").click(function() {
@@ -242,18 +231,11 @@ function appendArticle(item) {
 
     var p1 = document.createElement("p");
     var p2 = document.createElement("p");
-    //var pos_percent = document.createTextNode("50%")
-    //var neg_percent = document.createTextNode("50%")
     p1.innerHTML = "50%";
     p2.innerHTML = "50%";
 
-    //p1.appendChild(pos_percent);
-    //p2.appendChild(neg_percent);
-
     var thumbs_div = document.createElement("div");
     thumbs_div.classList.add("td");
-    //$(".td").css('display','inline-block');
-    //$(".td").css('float','left');
 
     var th_up = document.createElement("img");
     var th_down = document.createElement("img");
@@ -266,18 +248,6 @@ function appendArticle(item) {
     thumbs_div.appendChild(p1);
     thumbs_div.appendChild(th_down);
     thumbs_div.appendChild(p2);
-
-    //$(".td").css('float','left');
-
-    /*$(".td").css('display','inline-block');
-    //
-    $(.td).append("<img src='images/thumbs_up.png'/>");
-    $(thumbs_div).append("<p>50%</p>");
-    $(thumbs_div).append("<img src='images/thumbs_down.png'/>");
-    $(thumbs_div).append("<p>50%</p>");
-*/
-    
-    //thumbs_div.classList.add("thumbs");
     //SENTIMENT ANALYSIS
     //call the analyze function and pass a callback function which will update the DOM once score arrives
     analyzeSentiment(item.title, function(val) {
@@ -329,17 +299,6 @@ function appendArticle(item) {
 
 
     });
-
-    /*var thumbs_up = document.createElement("img");
-    var thumbs_down = document.createElement("img");
-    thumbs_up.src = "images/thumbs_up.png";
-    thumbs_down.src = "images/thumbs_down.png";
-    thumbs_up.setAttribute('class','thumbs_img');
-    thumbs_down.setAttribute('class','thumbs_img');*/
-
-
-
-
     title.appendChild(t);
     title.classList.add("title");   
     article.appendChild(title);
