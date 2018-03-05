@@ -15,22 +15,52 @@
     <body>
     	<header>
     		<span>news <b>IT</b></span>
+    		<span id="usernameHidden" hidden="true"></span>
+
+
     	</header>
     	<div id="overlay" onclick="off()"></div>
     	<div id="info"></div>
 		<div class="articles"></div>
     	<div id="openSide"><img src="images/ic_menu_white.png" width="40"></div>
     	<input id="searchBar" type="text" placeholder="Search topic" value=""></input>
+		
+		<div class="loginClass" hidden="true">
+		<div class="loginContent">
+			<h1>Welcome</h1>
 
+			<form class="form">
+				<input type="text" id="usernameText" placeholder="Username" />
+				<input type="password" placeholder="Password" />
+				<button type="submit" id="login-button" onclick="home();">Login</button>
+			</form>
+		</div>
+		</div>
+		
+		<div class="signupClass" hidden="true">
+		<div class="signupContent">
+			<h1>Sign Up</h1>
+
+			<form class="form">
+				<input type="text" id="nameText" placeholder="Full Name" />
+				<input type="text" id="email" placeholder="Email" />
+				<input type="text" id="usernameText" placeholder="Username" />
+				<input type="password" placeholder="Password" />
+				<button type="submit" id="submit-button" onclick="home();">Submit</button>
+			</form>
+		</div>
+		</div>
+		
 		<div id="openSearch"> <img src="images/ic_search_white.png" width="40"> </div>
     	<div id="Sidenav" class="sidenav">
 		  <a href="javascript:void(0)" class="closebtn">&times;</a>
 		  <a href="#search" id="search_button">Search</a>
 		  <a href="#saved" id="saved_button">Saved Topics</a>
+		  <a href="#signup" id="signup_button">Sign Up</a>
 		  <a href="#login" id="login_button">Login</a>
 		  <a href="#logout" id="logout_button">Logout</a>
 		</div>
-		<h3><b>top headlines</b><a href='#' class='btn btn-info btn-md'><span class='glyphicon glyphicon-plus'></span>add topic</a></h3>
+		<h3><b>Top Headlines:</b><a href='#' class='btn btn-info btn-md'><span class='glyphicon glyphicon-plus'></span>add topic</a></h3>
 		<ul class="list-group" id="listTopics"></ul>
 		<div id="advanced_search">advanced search</div>
 		<div id="search-options" class="panel panel-default">
