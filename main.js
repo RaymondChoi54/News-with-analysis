@@ -1,5 +1,13 @@
 "use strict";
 
+var watson = {
+    url: 'https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=',//Broward%20sheriff%20investigating%20claims%20that%20multiple%20deputies%20failed%20to%20enter%20Parkland%20school%20when%20they%20should%20have&features=sentiment,keywords',
+    auth: {
+        'user': '3da0d8c3-8b65-45ce-896a-a3cd30dd1750',
+        'pass': 'SsNBdyXZ6HDG'
+    }
+};
+
 var saved_topics = [];
  $(window).scroll(function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
@@ -111,16 +119,6 @@ $(document).on("mouseleave",".thumbnail", function(){
 })
 
 
-/*$(".articles").mouseenter(function () {
-               //$this = $(this);
-              $(this).css("background-color", "blue");
-        }).mouseleave(function ()
-        {
-           // $this = $(this);
-            $(this).css("background-color", "transparent");
-
-        });
-*/
 
 function getUrl() {
     var topic = $("#searchBar").val();
@@ -185,6 +183,8 @@ function moreArticles() {
 
 function appendArticle(i, item) {
     // Create article
+
+
     var article = document.createElement("div");
     article.classList.add("article");  
     document.getElementsByClassName("articles")[0].appendChild(article);
@@ -214,6 +214,38 @@ function appendArticle(i, item) {
     // Add title
     var title = document.createElement("p");
     var t = document.createTextNode(item.title);
+
+
+    //SENTIMENT ANALYSIS
+    //call the analyze function and pass a callback function which will update the DOM once score arrives
+    analyzeSentiment(item.title, function(val){
+    	var sentimentInfo = document.createElement("p");
+    	
+    	var s;
+    	if(val < -0.2){
+    		s = document.createTextNode("Negative sentiment ("+val+")");
+    		sentimentInfo.classList.add("negative_sentiments");
+    	}
+    	else if(val > 0.2){
+    		s = document.createTextNode("Positive sentiment ("+val+")");
+    		sentimentInfo.classList.add("positive_sentiments");
+    	}
+    	else{
+    		s = document.createTextNode("Neutral sentiment ("+val+")");
+    		sentimentInfo.classList.add("neutral_sentiments");
+    	}
+    	sentimentInfo.appendChild(s);
+
+    	//color the text based on sentiment
+    	$(".positive_sentiments").css({color:"green",fontSize:"18px"});
+    	$(".negative_sentiments").css({color:"red",fontSize:"18px"});
+    	$(".neutral_sentiments").css({color:"black",fontSize:"18px"});
+    	
+    	article.appendChild(sentimentInfo);
+
+    });
+
+
     title.appendChild(t);
     title.classList.add("title");   
     article.appendChild(title);
@@ -237,6 +269,10 @@ function appendArticle(i, item) {
     description.classList.add("p" + i);  
     article.appendChild(description);
 
+    //Send headline to analyze sentiment function
+   
+
+
     // Show description
     $(".p" + i).hide();
     // title.addEventListener("click", function(e) {
@@ -246,3 +282,27 @@ function appendArticle(i, item) {
         $(".p" + i).toggle();
     }
 }
+
+function analyzeSentiment(headline, callback){
+ 	var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
+ 	var score = 3;
+    $.ajax({
+        type        : "POST",
+        url         : "https://language.googleapis.com/v1/documents:analyzeSentiment?key="+ mykey,
+        contentType : "application/json",
+        data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline+'"}}',
+        success     : function(data_){
+            
+            score = data_.documentSentiment.score;
+            
+            callback(score);
+            
+        },
+        error       : function(err){
+            console.log(err);
+        }
+    });
+
+}
+
+
