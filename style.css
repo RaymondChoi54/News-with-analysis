@@ -272,31 +272,36 @@ h3 {
 
 
 .signupClass {
-  background: #4A8CB2;
-  position: absolute;
-  top: 50%;
-  left: 25%;
-  width: 50%;
-  height: 600px;
-  margin-top: -200px;
-  overflow: hidden;
+	background: #4A8CB2;
+	position: absolute;
+	top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+	margin: auto;
+	width: 60%;
+	height: 450px;
+	overflow: hidden;
+	max-width: 600px;
+	min-width: 350px;
 }
 
 .loginClass {
-  background: #4A8CB2;
-  position: absolute;
-  top: 50%;
-  left: 25%;
-  width: 50%;
-  height: 400px;
-  margin-top: -200px;
-  overflow: hidden;
+	background: #4A8CB2;
+	position: absolute;
+	top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 50%;
+	height: 400px;
+	overflow: hidden;
+	max-width: 600px;
+	min-width: 350px;
 }
 .signupContent {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 80px 0;
-  height: 400px;
+  padding: 25px 0;
   text-align: center;
 }
 .signupContent h1 {
@@ -310,10 +315,8 @@ h3 {
 }
 
 .loginContent {
-  max-width: 600px;
   margin: 0 auto;
   padding: 80px 0;
-  height: 400px;
   text-align: center;
 }
 .loginContent h1 {
