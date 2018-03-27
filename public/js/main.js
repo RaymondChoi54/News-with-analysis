@@ -240,7 +240,7 @@ function appendArticle(item) {
         on(item)
     }
     $(img).on('error', function(e) {
-        img.src = "images/favicon.png";
+        img.src = "favicon.png";
     });
 
     // Add title
@@ -263,8 +263,8 @@ function appendArticle(item) {
     var th_down = document.createElement("img");
 
 
-    th_up.src = "images/thumbs_up.png";
-    th_down.src = "images/thumbs_down.png";
+    th_up.src = "thumbs_up.png";
+    th_down.src = "thumbs_down.png";
     th_up.style.height = "25px";
     th_up.style.width = "25px";
     th_down.style.height = "25px";
@@ -276,28 +276,28 @@ function appendArticle(item) {
     thumbs_div.appendChild(p2);
     //SENTIMENT ANALYSIS
     //call the analyze function and pass a callback function which will update the DOM once score arrives
-    analyzeSentiment(item.title, function(val) {
-        if(val < 0) {
-            val = val * -1.0;
-            var temp = val + 1.0;
-            temp = temp/2.0;
-            p2.innerHTML = (temp*100).toFixed(0) + "%";
-            var temp2 = 100 - temp*100;
-            p1.innerHTML = temp2.toFixed(0) + "%";
-        }
-        if(val > 0) {
-            val = val * 1.0;
-            var temp = val + 1.0;
-            temp = temp/2.0;
-            p1.innerHTML = (temp*100).toFixed(0) + "%";
-            var temp2 = 100 - temp*100;
-            p2.innerHTML = temp2.toFixed(0) + "%";
-        }
-        if(val == 0) {
-            p1.innerHTML = "50%";
-            p2.innerHTML = "50%";
-        }
-    });
+    // analyzeSentiment(item.title, function(val) {
+    //     if(val < 0) {
+    //         val = val * -1.0;
+    //         var temp = val + 1.0;
+    //         temp = temp/2.0;
+    //         p2.innerHTML = (temp*100).toFixed(0) + "%";
+    //         var temp2 = 100 - temp*100;
+    //         p1.innerHTML = temp2.toFixed(0) + "%";
+    //     }
+    //     if(val > 0) {
+    //         val = val * 1.0;
+    //         var temp = val + 1.0;
+    //         temp = temp/2.0;
+    //         p1.innerHTML = (temp*100).toFixed(0) + "%";
+    //         var temp2 = 100 - temp*100;
+    //         p2.innerHTML = temp2.toFixed(0) + "%";
+    //     }
+    //     if(val == 0) {
+    //         p1.innerHTML = "50%";
+    //         p2.innerHTML = "50%";
+    //     }
+    // });
 
     article.appendChild(thumbs_div);
 
@@ -324,7 +324,7 @@ function on(article) {
     a.appendChild(appendImg);
     moreInfo.appendChild(a)
     $(appendImg).on('error', function(e) {
-        appendImg.src = "images/favicon.png";
+        appendImg.src = "favicon.png";
     });
     // Author and publish date
     var data = document.createElement("p");
@@ -355,21 +355,22 @@ function off() {
     document.getElementById("info").innerHTML = "";
 }
 
-function analyzeSentiment(headline, callback) {
-    var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
-    var score = 3;
-    $.ajax({
-        type        : "POST",
-        url         : "https://language.googleapis.com/v1/documents:analyzeSentiment?key="+ mykey,
-        contentType : "application/json",
-        data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline+'"}}',
-        success     : function(data_) {
-            score = data_.documentSentiment.score;
-            callback(score);
-        },
-        error       : function(err) {
-            console.log(err);
-        }
-    });
 
-}
+// function analyzeSentiment(headline, callback) {
+//     var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
+//     var score = 3;
+//     $.ajax({
+//         type        : "POST",
+//         url         : "https://language.googleapis.com/v1/documents:analyzeSentiment?key="+ mykey,
+//         contentType : "application/json",
+//         data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline+'"}}',
+//         success     : function(data_) {
+//             score = data_.documentSentiment.score;
+//             callback(score);
+//         },
+//         error       : function(err) {
+//             console.log(err);
+//         }
+//     });
+
+// }
