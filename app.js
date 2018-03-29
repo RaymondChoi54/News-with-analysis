@@ -36,12 +36,13 @@ app.post('/signup', function (req, res) {
 	  	req.body.email &&
 	    req.body.username &&
 	    req.body.password) {
-
+		var topics = new Array();
 	    var userData = {
 	      fullname: req.body.fullname,
 	      email: req.body.email,
 	      username: req.body.username,
 	      password: req.body.password,
+	      savedTopics: topics
 	    }
 	}
 	//console.log
