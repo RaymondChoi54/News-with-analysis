@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-app.post('/j', function (req, res) {
+app.post('/signup', function (req, res) {
 /*
   // confirm that user typed same password twice
   if (req.body.password !== req.body.passwordConf) {
