@@ -64,6 +64,23 @@ app.post('/signup', function (req, res) {
 
 });
 
+app.post('/login', function (req, res) {
+  console.log('findOne');
+      User.findOne({ username: req.body.username, password: req.body.password }, (err, aUser) => {
+      if (err) {
+        console.log("error!!");
+        return res.redirect('/');
+      } else {
+        if (aUser != null) {
+          console.log(aUser);
+          return res.redirect('/'); 
+        } {
+          return res.redirect('/'); 
+        }  //change this
+      }
+    });
+});
+
 // POST route after registering
 app.post('/profile', function (req, res, next) {
   return res.send('POST profile');
