@@ -14,12 +14,18 @@
     <body>
       <header>
         <span>news <b>IT</b></span>
-        <span id="usernameHidden" hidden="true"></span>
+        <span><%= fullname %></span>
+        <div id="userValue" style="display: none;"><%= username %></div>
       </header>
       <div id="overlay" onclick="off()"></div>
       <div id="info"></div>
       <div id="openSide"><img src="ic_menu_white.png" width="40"></div>
-      <input id="searchBar" type="text" placeholder="Search topic" value=""></input>
+      <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+      <form class="search" id="search" action="/topic" target="dummyframe" method="post">
+        <input name="username" type="text" style="display: none;" placeholder="Search topic" value=<%= username %>></input>
+        <input name="topic" id="searchBar" type="text" placeholder="Search topic" value=""></input>
+        <input type="submit" style="display:none" />
+      </form>
     
     <div class="loginClass" hidden="true">
     <div class="loginContent">

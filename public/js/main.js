@@ -20,9 +20,7 @@ $(".closebtn").click(function(){
 $(".btn").click(function(){
     //display topics
     var topic= $("#searchBar").val();
-    if (!saved_topics.includes(topic)) {
-        saved_topics.push(topic);
-    }
+    saved_topics.push(topic);
 });
 
 //toggle search bar
@@ -37,6 +35,12 @@ $("#openSearch").click(function() {
         var url = getUrl();
         fillSite(url);
     }
+});
+
+$('.btn.btn-info.btn-md').click(function() {
+    var topic= $("#searchBar").val();
+    console.log("save:" + topic);
+    $("#search").submit();
 });
 
 //if user pressed enter search
@@ -97,7 +101,6 @@ $('#logout_button').click(function() {
         $("#Sidenav").css("width","0px");
         $("h3 > b").html("Top Headlines:");
         fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
-    document.getElementById("usernameHidden").hidden = true;
 });
 
 
@@ -112,9 +115,6 @@ function home() {
     clear();
     $("#Sidenav").css("width","0px");
     $("h3 > b").html("Top Headlines:");
-    document.getElementById("usernameHidden").hidden = false;
-    document.getElementById("usernameHidden").innerText = getUsername();
-    document.getElementById("usernameHidden").hidden = false;
     fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 
 }
