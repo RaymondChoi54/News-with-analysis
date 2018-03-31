@@ -127,6 +127,7 @@ app.post('/login', function (req, res) {
           res.render('index', aUser);
         } else {
           console.log("No such user found");
+          return false;
         }  //change this
       }
     });

@@ -1,5 +1,6 @@
 "use strict";
 
+google.charts.load('current', {'packages':['corechart']});
  $(window).scroll(function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
         moreArticles()
@@ -53,9 +54,123 @@ $('#saved_button').click(function() {
     clear();
     $("#Sidenav").css("width","0px");
     $("h3 > b").html("Saved Topics:");
-    $("#listTopics").show(); 
+    $("#listTopics").show();
 });
 
+function inputDays() {
+    document.getElementById("graph").innerHTML = "";
+    var topic = $().text();
+    console.log(topic);
+    document.getElementById("inputDays").hidden = false;
+    $('#inputDays').bind('keypress', function(e) {
+        if (e.keyCode==13) {
+                var days = $('#inputDays').val();
+                if (days > 0) {
+                    console.log(topic);
+                    // var days=3;
+                    // Set a callback to run when the Google Visualization API is loaded.
+                    drawChart(topic, days);
+            }
+        }
+    });
+}
+
+$('.loadSaved').click(function() {
+    document.getElementById("graph").innerHTML = "";
+    var topic = $(this).text();
+    console.log(topic);
+    document.getElementById("inputDays").hidden = false;
+    $('#inputDays').bind('keypress', function(e) {
+        if (e.keyCode==13) {
+                var days = $('#inputDays').val();
+                if (days > 0) {
+                    console.log(topic);
+                    // var days=3;
+                    // Set a callback to run when the Google Visualization API is loaded.
+                    drawChart(topic, days);
+            }
+        }
+    });
+});
+
+
+function drawChart(topic, days) {
+    console.log(topic);
+    var rows = [];
+    let d = new Date();
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'date');
+    data.addColumn('number', 'SENTIMENT');
+    for (let i=0;i<days;i++) {
+        let lastdate = d;
+        console.log("new date="+d.toISOString());
+        var isolastdate = d.toISOString();
+        d.setDate(d.getDate() - 1);
+        console.log("old date=" + d.toISOString());
+        var isodate = d.toISOString();
+        let url = "https://newsapi.org/v2/everything?language=en" + "&from="+isodate+ "&to="+ lastdate
+        + "&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77";
+        getRow(url,isodate,function(row) {
+            data.addRow(row);
+            console.log("add row");
+        })
+    }
+    // Set chart options
+    var options = {'title': topic + ": " + "sentiment analysis past " + days +" days",
+                   'width':600,
+                   'height':500};
+
+    // Instantiate and draw our chart, passing in some options.
+    console.log("before draw");
+    var chart = new google.visualization.LineChart(document.getElementById('graph'));
+    console.log("after draw");
+    chart.draw(data, options);
+  }
+
+function getRow(url,isodate, callback) {
+    $.ajax({
+        type:'GET',
+        url:url,
+        async: false,
+        success:function(data) {
+            console.log(data);
+            console.log(data.articles.length);
+            var score = 0;
+            for (let x=0;x<data.articles.length;x++) {
+                // var analyzescore = 1;
+                analyzeSentimentSync(data.articles[x].title, function(val){
+                    if(val < 0) {
+                        val = val * -1.0;
+                        var temp = val + 1.0;
+                        temp = temp/2.0;
+                        var temp2 = 100 - temp*100;
+                        score = score +temp2;
+                    }
+                    if(val > 0) {
+                        val = val * 1.0;
+                        var temp = val + 1.0;
+                        temp = (temp/2.0)*100;
+                        score = score +temp;
+                    }
+                    if (val == 0) {
+                        score = score + 50
+                    }
+                    console.log(val);
+                    // score = score +val;
+                });
+                // score = score +analyzescore;
+            }
+            var sentiment = score / data.articles.length;
+            console.log(isodate);
+            console.log(sentiment);
+            var row = [isodate,sentiment];
+            callback(row);
+        },
+        error       : function(err) {
+            console.log(err);
+        }
+    });
+}
 $('#signup_button').click(function() {
     //signup page
     clear();
@@ -156,6 +271,8 @@ function clear() {
     $("#search-options").hide();
     document.getElementsByClassName("articles")[0].innerHTML = "";
     document.getElementById("articleContents").style.display = "none";
+    document.getElementById("inputDays").hidden = true;
+    document.getElementById("graph").innerHTML = "";
 }
 
 //fill page with articles
@@ -353,7 +470,24 @@ function analyzeSentiment(headline, callback) {
 }
 
 
-
+function analyzeSentimentSync(headline, callback) {
+    var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
+    var score = 3;
+    $.ajax({
+        type        : "POST",
+        url         : "https://language.googleapis.com/v1/documents:analyzeSentiment?key="+ mykey,
+        contentType : "application/json",
+        data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline+'"}}',
+        async: false,
+        success     : function(data_) {
+            score = data_.documentSentiment.score;
+            callback(score);
+        },
+        error       : function(err) {
+            console.log(err);
+        }
+    });
+}
 
 //var mongoose = require('mongoose');
 //var bcrypt = require('bcrypt');
