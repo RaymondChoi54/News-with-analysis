@@ -2,11 +2,10 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
-
 const User = require('./public/js/user')
-
-var bodyParser = require('body-parser');
-
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 app.use(express.static(__dirname + '/public'));
 app.set('views', path.join(__dirname, 'views'));
@@ -14,12 +13,49 @@ app.set('view engine', 'ejs');
 // app.get('/', (req, res) => res.render('index'));
 //app.get('/', (req, res) => res.sendFile('index.html', {root : __dirname + '/'}));
 
+
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+app.use(cookieParser());
+session.nCookieExpirationDelay = 48;
+session.bLocationLogin = true; //keep this for testing purposes only- shows username in url
+
+app.use(session({
+   key: 'user_sessionid',	
+  secret: 'this is a secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+        expires: 600000
+    }
+}));
+
+app.use((req, res, next) => {
+    if (req.cookies.user_sid && !req.session.user) {
+        res.clearCookie('user_sessionid');        
+    }
+    next();
+});
+
+var checkSession = (req, res, next) => {
+    if (req.session.user && req.cookies.user_sessionid) {
+        res.redirect('/');
+    } else {
+        next();
+    }    
+};
+
+
+// route for handling 404 requests(unavailable routes)
+//app.use(function (req, res, next) {
+//  res.status(404).send("Oops! Cannot find whst you're looking for!")
+//});
+
 
 
 app.get('/',  function (req, res) {
@@ -71,14 +107,7 @@ app.post('/topic', function (req, res) {
 });
 
 app.post('/signup', function (req, res) {
-/*
-  // confirm that user typed same password twice
-  if (req.body.password !== req.body.passwordConf) {
-    var err = new Error('Passwords do not match.');
-    err.status = 400;
-    return next(err);
-  }
-*/
+
 	console.log("...");
 	console.log(req.body);
 	if (req.body.fullname &&
@@ -91,7 +120,7 @@ app.post('/signup', function (req, res) {
 	      email: req.body.email,
 	      username: req.body.username,
 	      password: req.body.password,
-	      savedTopics: topics
+	      savedTopics: "[]"
 	    }
 	}
 	//console.log
@@ -101,17 +130,11 @@ app.post('/signup', function (req, res) {
       	console.log("error");
       	return res.redirect('/');
       } else {
-      	console.log("no error")
-        return res.redirect('/');			//change this
+      	console.log("no error");
+      	//req.session.user = user.dataValues;
+        return res.redirect('/');			//change this to dashboard or something
       }
     });
-
-  /*} else {
-    var err = new Error('All fields have to be filled out');
-    err.status = 400;
-    return next(err);
-  }*/
-
 });
 
 app.post('/login', function (req, res) {
@@ -120,7 +143,7 @@ app.post('/login', function (req, res) {
     User.findOne({ username: req.body.username, password: req.body.password }, (err, aUser) => {
       if (err) {
         console.log("error!!");
-        return res.redirect('/');
+        return res.redirect('/login');
       } else {
         if (aUser != null) {
           console.log(aUser);
@@ -137,7 +160,14 @@ app.post('/login', function (req, res) {
   }
 });
 
-// POST route after registering
-app.post('/profile', function (req, res, next) {
-  return res.send('POST profile');
+ 	
+app.get('/logout', function (req, res) {
+   if (req.session.user && req.cookies.user_sessionid) {
+        res.clearCookie('user_sessionid');
+        res.redirect('/');
+    } else {
+        res.redirect('/');
+    }
+
 });
+  

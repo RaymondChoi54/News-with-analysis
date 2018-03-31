@@ -189,7 +189,9 @@ $('#login_button').click(function() {
 
 $('#logout_button').click(function() {
     //logout page
-   clear();
+    console.log("logging out");
+  	$("/logout").submit();
+   	clear();
         $("#Sidenav").css("width","0px");
         $("h3 > b").html("Top Headlines:");
         fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
