@@ -74,9 +74,9 @@ app.post('/login', function (req, res) {
       } else {
         if (aUser != null) {
           console.log(aUser);
-          return res.redirect('/'); 
+          res.redirect('/'); 
         } {
-          return res.redirect('/'); 
+          res.send("Wrong username or password"); 
         }  //change this
       }
     });

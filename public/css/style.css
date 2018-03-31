@@ -24,7 +24,12 @@ body {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    z-index: -2;
+    z-index: 0;
+}
+
+#graph {
+	margin-top: 200px;
+	float: right;
 }
 
 .btn {
@@ -152,6 +157,7 @@ a {
     overflow-x: hidden; 
     padding-top: 60px;
     transition: 0.5s;
+    z-index: 10
 }
 
 .sidenav a {

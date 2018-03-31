@@ -50,7 +50,7 @@ $('#searchBar').bind('keypress', function(e) {
         fillSite(url);
     }
 });
-
+// Load the Visualization API and the corechart package.
 //Replace page with list of topics
 $('#saved_button').click(function() {
     //saved topics
@@ -59,21 +59,98 @@ $('#saved_button').click(function() {
     $("h3 > b").html("Saved Topics:");
     for (let i = 0; i < saved_topics.length; i++) {
         var btn = document.createElement("button");
+        // var btn = $('<div class="loadSaved" onclick="clickTopic()"><div>').text(saved_topics[i]);
         btn.classList.add("loadSaved")
         var t = document.createTextNode(saved_topics[i]);
+        google.charts.load('current', {'packages':['corechart']});
         btn.onclick = function() {
-            $("#searchBar").val(saved_topics[i])
-            clear();
-            $("#Sidenav").css("width","0px");
-            $("h3 > b").html("search results: "+ $("#searchBar").val());
-            $('.btn.btn-info.btn-md').show();
-            var url = getUrl();
-            fillSite(url);
+            // console.log("hi");
+            // $("#searchBar").val(saved_topics[i])
+            // clear();
+            // $("#Sidenav").css("width","0px");
+            // $("h3 > b").html("search results: "+ $("#searchBar").val());
+            // $('.btn.btn-info.btn-md').show();
+            // var url = getUrl();
+            // fillSite(url);
+            var topic = $(this).text();
+            console.log(topic);
+            // var days=3;
+            // Set a callback to run when the Google Visualization API is loaded.
+            document.getElementById("graph").innerHTML = "";
+            // google.charts.setOnLoadCallback(function() {
+                // var rows = dataPoints(topic, 2);
+                // console.log(rows);
+                // [["hii",1],["hii",1]]
+                drawChart(topic, 2);
+            // });
         }
         btn.appendChild(t);      
         $("#listTopics").append(btn);
     }
 });
+
+function drawChart(topic, days) {
+        console.log(topic);
+        var rows = [];
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'date');
+        data.addColumn('number', 'SENTIMENT');
+        let d = new Date();
+        for (var i=0;i<days;i++) {
+            let lastdate = d;
+            console.log("new date="+d.toISOString());
+            var isolastdate = d.toISOString();
+            d.setDate(d.getDate() - 1);
+            console.log("old date=" + d.toISOString());
+            var isodate = d.toISOString();
+            let url = "https://newsapi.org/v2/everything?language=en" + "&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77";
+            $.ajax({
+                type:'GET',
+                url:url,
+                success:function(data) {
+                    console.log(data);
+                    console.log(data.articles.length);
+                    var score = 0;
+                    for (var x=0;x<data.articles.length;x++) {
+                        // analyzeSentiment(data.articles[x].title);
+                        var analyzescore = 1;
+                        score = score +analyzescore;
+                    }
+                    var sentiment = score / data.articles.length;
+                    // analyzeSentiment()
+                    // var row = [isodate, sentiment];
+                    console.log(isodate);
+                    console.log(sentiment);
+                    rows[i]=[isodate, sentiment];
+                }
+            });
+        }
+        // Create the data table.
+        // console.log('rows'+rows);
+        // data.addRows([
+        //   ['Mushrooms', 3],
+        //   ['Onions', 1],
+        //   ['Olives', 1],
+        //   ['Zucchini', 1],
+        //   ['Pepperoni', 2]
+        // ]);
+        // rows.push(['Mushrooms', 3]);
+        // rows.push(['Onions', 1]);
+        // data.addRow(['Onions', 1]);
+        data.addRows(rows);
+
+
+        // Set chart options
+        var options = {'title': topic + " analysis past " + days +" days",
+                       'width':500,
+                       'height':400};
+
+        // Instantiate and draw our chart, passing in some options.
+        console.log("before draw");
+        var chart = new google.visualization.LineChart(document.getElementById('graph'));
+        console.log("after draw");
+        chart.draw(data, options);
+      }
 
 $('#signup_button').click(function() {
     //signup page
@@ -82,6 +159,55 @@ $('#signup_button').click(function() {
     $(".signupClass").show();
 });
 
+function dataPoints(topic,days) {
+    let d = new Date();
+    var rows = [];
+    for (let i=0;i<days;i++) {
+        rows[i] = ["hii",1];
+        rows[i] = new Array(2);
+    }
+    for (let i=0;i<days;i++) {
+        let lastdate = d;
+        console.log("new date="+d.toISOString());
+        var isolastdate = d.toISOString();
+        d.setDate(d.getDate() - 1);
+        console.log("old date=" + d.toISOString());
+        var isodate = d.toISOString();
+        // var url = "https://newsapi.org/v2/everything?language=en"+"&from="+isodate+"&to="+isolastdate+"&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77";
+        // rows[i] = ["hii", 1];
+        // $.ajax({
+        //     type:'GET',
+        //     url:url,
+        //     success:function(data) {
+        //         console.log(data);
+        //         console.log(data.articles.length);
+        //         var score = 0;
+        //         for (var x=0;x<data.articles.length;x++) {
+        //             // analyzeSentiment(data.articles[x].title);
+        //             var analyzescore = 1;
+        //             score = score +analyzescore;
+        //         }
+        //         var sentiment = score / data.articles.length;
+        //         // analyzeSentiment()
+        //         // var row = [isodate, sentiment];
+        //         console.log(isodate);
+        //         console.log(sentiment);
+        //         // rows.push(["mus", sentiment]);
+        //         // var keyvalue = new Array();
+        //         // var rows = [];
+        //         var row = [isolastdate, sentiment];
+        //         // row[0] = isolastdate;
+        //         // row[1] = sentiment;k
+        //         console.log(i);
+        //         // rows[i] = [];
+        //         // rows[i] = row;
+        //         // rows[i] = [isolastdate, sentiment];
+        //         // rows.push(keyvalue);
+        //     }
+        // });
+    }
+    return rows;
+}
 
 $('#login_button').click(function() {
     //login page
@@ -179,6 +305,7 @@ function clear() {
     $("#search-options").hide();
     document.getElementsByClassName("articles")[0].innerHTML = "";
     document.getElementById("articleContents").style.display = "none";
+    document.getElementById("graph").innerHTML = "";
 }
 
 //fill page with articles
