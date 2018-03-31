@@ -1,6 +1,5 @@
 "use strict";
-//list of topics saved
-var saved_topics = [];
+
  $(window).scroll(function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
         moreArticles()
@@ -14,13 +13,6 @@ $("#openSide").click(function(){
 
 $(".closebtn").click(function(){
         $("#Sidenav").css("width","0px");
-});
-
-//add topics to saved_topic list
-$(".btn").click(function(){
-    //display topics
-    var topic= $("#searchBar").val();
-    saved_topics.push(topic);
 });
 
 //toggle search bar
@@ -38,7 +30,7 @@ $("#openSearch").click(function() {
 });
 
 $('.btn.btn-info.btn-md').click(function() {
-    var topic= $("#searchBar").val();
+    var topic = $("#searchBar").val();
     console.log("save:" + topic);
     $("#search").submit();
 });
@@ -61,22 +53,7 @@ $('#saved_button').click(function() {
     clear();
     $("#Sidenav").css("width","0px");
     $("h3 > b").html("Saved Topics:");
-    for (let i = 0; i < saved_topics.length; i++) {
-        var btn = document.createElement("button");
-        btn.classList.add("loadSaved")
-        var t = document.createTextNode(saved_topics[i]);
-        btn.onclick = function() {
-            $("#searchBar").val(saved_topics[i])
-            clear();
-            $("#Sidenav").css("width","0px");
-            $("h3 > b").html("search results: "+ $("#searchBar").val());
-            $('.btn.btn-info.btn-md').show();
-            var url = getUrl();
-            fillSite(url);
-        }
-        btn.appendChild(t);      
-        $("#listTopics").append(btn);
-    }
+    $("#listTopics").show(); 
 });
 
 $('#signup_button').click(function() {
@@ -174,7 +151,7 @@ function clear() {
     $("h3 > b").html("");
     $(".loginClass").hide();
     $(".signupClass").hide();   
-    $("#listTopics").html("");
+    $("#listTopics").hide();  
     $('.btn.btn-info.btn-md').hide();
     $("#search-options").hide();
     document.getElementsByClassName("articles")[0].innerHTML = "";
