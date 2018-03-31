@@ -59,6 +59,9 @@ var checkSession = (req, res, next) => {
 
 
 app.get('/',  function (req, res) {
+	if (req.session.emailID && req.cookies.user_sessionid) {
+		
+	}
   res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
 });
 
@@ -131,7 +134,7 @@ app.post('/signup', function (req, res) {
       	return res.redirect('/');
       } else {
       	console.log("no error");
-      	//req.session.user = user.dataValues;
+      	//req.session.user = userData.email;
         return res.redirect('/');			//change this to dashboard or something
       }
     });
@@ -147,6 +150,11 @@ app.post('/login', function (req, res) {
       } else {
         if (aUser != null) {
           console.log(aUser);
+          req.session.emailID = aUser.email; //unique session identifier 
+           console.log("req.session:");
+			console.log(req.session);
+         console.log("req.session.user:");
+			console.log(req.session.emailID);
           res.render('index', aUser);
         } else {
           console.log("No such user found");
@@ -162,7 +170,8 @@ app.post('/login', function (req, res) {
 
  	
 app.get('/logout', function (req, res) {
-   if (req.session.user && req.cookies.user_sessionid) {
+   if (req.session.emailID && req.cookies.user_sessionid) {
+   		console.log("clearing");
         res.clearCookie('user_sessionid');
         res.redirect('/');
     } else {
