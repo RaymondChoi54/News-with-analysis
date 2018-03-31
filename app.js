@@ -59,10 +59,20 @@ var checkSession = (req, res, next) => {
 
 
 app.get('/',  function (req, res) {
-	if (req.session.emailID && req.cookies.user_sessionid) {
-		
+	if (req.session.userInfo && req.cookies.user_sessionid) {
+	
+		  res.render('index', {savedTopics: req.session.userInfo.savedTopics, 
+		  					fullname:req.session.userInfo.fullname, 
+		  					email: req.session.userInfo.email, 
+		  					username: req.session.userInfo.username,
+		  					password:  req.session.userInfo.password});
+
+
 	}
-  res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
+	else{
+		  res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
+
+	}
 });
 
 // app.get('/', function (req, res) {
@@ -150,11 +160,11 @@ app.post('/login', function (req, res) {
       } else {
         if (aUser != null) {
           console.log(aUser);
-          req.session.emailID = aUser.email; //unique session identifier 
+          req.session.userInfo = aUser; //unique session identifier 
            console.log("req.session:");
 			console.log(req.session);
          console.log("req.session.user:");
-			console.log(req.session.emailID);
+			console.log(req.session.userInfo);
           res.render('index', aUser);
         } else {
           console.log("No such user found");
@@ -170,7 +180,7 @@ app.post('/login', function (req, res) {
 
  	
 app.get('/logout', function (req, res) {
-   if (req.session.emailID && req.cookies.user_sessionid) {
+   if (req.session.userInfo && req.cookies.user_sessionid) {
    		console.log("clearing");
         res.clearCookie('user_sessionid');
         res.redirect('/');
