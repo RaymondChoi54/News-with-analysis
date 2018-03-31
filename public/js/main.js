@@ -52,6 +52,9 @@ $('#searchBar').bind('keypress', function(e) {
         $('.btn.btn-info.btn-md').show();
         var url = getUrl();
         fillSite(url);
+
+        //console.log("trump history: ");
+        //sentimentHistory("trump");
     }
 });
 
@@ -167,6 +170,8 @@ function getUrl() {
     if (limit == "") {
         limit = 20;
     }
+
+
     return "https://newsapi.org/v2/everything?language=" + lang + "&sortBy=" + sort + "&pageSize=" + limit + "&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77";
 }
 
@@ -183,6 +188,7 @@ function clear() {
 
 //fill page with articles
 function fillSite(url) {
+    //console.log("asdfasdf");
     document.getElementById("articleContents").style.display = "block";
     $.ajax({
         type:'GET',
@@ -193,6 +199,10 @@ function fillSite(url) {
             })
         }
     });
+    //console.log("trump history: ");
+    //sentimentHistory("trump");
+
+    
 }
 
 //add more articles to page
@@ -276,18 +286,19 @@ function appendArticle(item) {
     thumbs_div.appendChild(p2);
     //SENTIMENT ANALYSIS
     //call the analyze function and pass a callback function which will update the DOM once score arrives
-    // analyzeSentiment(item.title, function(val) {
+    // analyzeSentiment(item.title + ". " + item.description, function(val) {
+    //     var val_ = 0;
     //     if(val < 0) {
-    //         val = val * -1.0;
-    //         var temp = val + 1.0;
+    //         val_ = val * -1.0;
+    //         var temp = val_ + 1.0;
     //         temp = temp/2.0;
     //         p2.innerHTML = (temp*100).toFixed(0) + "%";
     //         var temp2 = 100 - temp*100;
     //         p1.innerHTML = temp2.toFixed(0) + "%";
     //     }
     //     if(val > 0) {
-    //         val = val * 1.0;
-    //         var temp = val + 1.0;
+    //         val_ = val * 1.0;
+    //         var temp = val_ + 1.0;
     //         temp = temp/2.0;
     //         p1.innerHTML = (temp*100).toFixed(0) + "%";
     //         var temp2 = 100 - temp*100;
@@ -356,14 +367,14 @@ function off() {
 }
 
 
-function analyzeSentiment(headline, callback) {
+function analyzeSentiment(headline_description, callback) {
     var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
     var score = 3;
     $.ajax({
         type        : "POST",
         url         : "https://language.googleapis.com/v1/documents:analyzeSentiment?key="+ mykey,
         contentType : "application/json",
-        data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline+'"}}',
+        data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline_description+'"}}',
         success     : function(data_) {
             score = data_.documentSentiment.score;
             callback(score);
@@ -375,6 +386,67 @@ function analyzeSentiment(headline, callback) {
 
 }
 
+/*function sentimentHistory(topic){
+
+    //var topic = $("#searchBar").val();
+   //var sort = $("#sort-by").val();
+    
+    //var limit = $("#limit").val();
+    //var num_art = document.getElementsByClassName("articles")[0].children.length;
+
+    //var now = new Date();
+    //var monthAgo = now.setMonth(now.getMonth() - 1);
+    //var month = monthAgo.getMonth();
+    //var day = monthAgo.getDate();
+    //from = "2018-" + month + day;
+    //to = 
+    
+    //var page = num_art / parseInt(limit) + 1
+
+    var now = new Date();
+    now.setMonth(now.getMonth() - 1);
+    var topic = "trump";
+    var sort = "popularity";
+    var lang = "en"
+    var limit = 5;
+    var url = "";
+
+    var from = "";
+    var to = "";
+
+    var sentimentArray = [] //array containing sentiment scores over last n days
+
+    for(var i = 0; i < 10; i++){
+        //day = current.getDate();
+        console.log(now);
+        console.log(now.getFullYear() +"-"+ (now.getMonth()+1) + "-"+ now.getDate());
+        from = now.getFullYear() +"-"+ (now.getMonth()+1) + "-"+ now.getDate()
+        now.setDate(now.getDate() + 1);
+        to = now.getFullYear() +"-"+ (now.getMonth()+1) + "-"+ now.getDate()
+        //from =
+        //console.log()
+    
+    
+        url = "https://newsapi.org/v2/everything?language=" + lang + "&sortBy=" + sort + "&from=" + from + "&to=" + to + "&pageSize=" + limit + "&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77";
+
+        $.ajax({
+            type:'GET',
+            url:url,
+            success:function(data) {
+                //console.log("results loop " + i)
+                //console.log(data.articles);
+                $.each(data.articles, function(i, item) {
+                    //appendArticle(item);
+                    console.log(i +": ");
+                    console.log(item.title)
+                })
+            }
+        });
+    }
+
+
+}
+*/
 
 
 
