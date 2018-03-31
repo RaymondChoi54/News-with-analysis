@@ -64,7 +64,13 @@
       <a href="#logout" id="logout_button">Logout</a>
     </div>
     <h3><b>Top Headlines:</b><a href='#' class='btn btn-info btn-md'><span class='glyphicon glyphicon-plus'></span>add topic</a></h3>
-    <ul class="list-group" id="listTopics"></ul>
+    <ul class="list-group" id="listTopics" style="display: none;">
+      <% for (let i = 0; i < savedTopics.length; i++) { %>
+      <button class='loadSaved'><%= savedTopics[i] %></button>
+      <% } %>
+    </ul>
+    <input id="inputDays" name="days" type="number" placeholder="number of days ago" hidden="true"/>
+    <div id="graph"></div>
     <div id="articleContents" display="block">
       <div id="advanced_search">advanced search</div>
       <div class="articles"></div>
@@ -104,6 +110,7 @@
     </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="/js/main.js"></script>
     </body>
 
