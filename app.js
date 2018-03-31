@@ -116,19 +116,24 @@ app.post('/signup', function (req, res) {
 
 app.post('/login', function (req, res) {
   console.log('findOne');
-  User.findOne({ username: req.body.username, password: req.body.password }, (err, aUser) => {
-    if (err) {
-      console.log("error!!");
-      return res.redirect('/');
-    } else {
-      if (aUser != null) {
-        console.log(aUser);
-        res.render('index', aUser);
+  if (req.body.username && req.body.password) {
+    User.findOne({ username: req.body.username, password: req.body.password }, (err, aUser) => {
+      if (err) {
+        console.log("error!!");
+        return res.redirect('/');
       } else {
-        console.log("No such user found");
-      }  //change this
-    }
-  });
+        if (aUser != null) {
+          console.log(aUser);
+          res.render('index', aUser);
+        } else {
+          console.log("No such user found");
+        }  //change this
+      }
+    });
+  } else {
+    console.log("No info entered");
+    return res.redirect('/');
+  }
 });
 
 // POST route after registering
