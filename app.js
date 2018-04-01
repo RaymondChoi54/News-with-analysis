@@ -6,6 +6,9 @@ const User = require('./public/js/user')
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
+const salt = bcrypt.genSaltSync();
+
 
 app.use(express.static(__dirname + '/public'));
 app.set('views', path.join(__dirname, 'views'));
@@ -151,13 +154,16 @@ app.post('/signup', function (req, res) {
 	    req.body.username &&
 	    req.body.password) {
 		var topics = new Array();
+		var hash = bcrypt.hashSync(req.body.password, salt);
 	    var userData = {
 	      fullname: req.body.fullname,
 	      email: req.body.email,
 	      username: req.body.username,
-	      password: req.body.password,
+	      password: hash,
 	      savedTopics: "[]"
 	    }
+	    console.log("userData is:");
+	    console.log(userData);
 	}
 	//console.log
     //use schema.create to insert data into the db
@@ -175,20 +181,26 @@ app.post('/signup', function (req, res) {
 
 app.post('/login', function (req, res) {
   console.log('findOne');
-  if (req.body.username && req.body.password) {
-    User.findOne({ username: req.body.username, password: req.body.password }, (err, aUser) => {
+  if (req.body.username && req.body.password) {  	
+    User.findOne({ username: req.body.username}, (err, aUser) => {
       if (err) {
         console.log("error!!");
         return res.redirect('/login');
       } else {
         if (aUser != null) {
           console.log(aUser);
-          req.session.userInfo = aUser; //unique session identifier 
-          console.log("req.session:");
-          console.log(req.session);
-          console.log("req.session.user:");
-          console.log(req.session.userInfo);
-          res.render('index', aUser);
+          if(bcrypt.compareSync(req.body.password, aUser.password)){
+          	req.session.userInfo = aUser; //unique session identifier 
+           	console.log("req.session:");
+			      console.log(req.session);
+         	  console.log("req.session.user:");
+			      console.log(req.session.userInfo);
+          	res.render('index', aUser);
+          }
+          else{
+          	console.log("Incorrect Password");
+          	return false;
+          }
         } else {
           console.log("No such user found");
           return false;
