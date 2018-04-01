@@ -93,6 +93,10 @@ $('.loadSaved').click(function() {
     });
 });
 
+$('.deleteTopic').click(function() {
+    $(this).parent().submit();
+    $(this).parent().remove();
+});
 
 function drawChart(topic, days) {
     console.log(topic);
@@ -127,7 +131,7 @@ function drawChart(topic, days) {
     chart.draw(data, options);
   }
 
-function getRow(url,isodate, callback) {
+function getRow(url, isodate, callback) {
     $.ajax({
         type:'GET',
         url:url,
