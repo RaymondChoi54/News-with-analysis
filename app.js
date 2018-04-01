@@ -76,7 +76,7 @@ app.get('/',  function (req, res) {
 	}
 });
 
-app.put('/:user/topics/:topic', function (req, res) {
+app.put('/users/:user/topics/:topic', function (req, res) {
   if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
@@ -111,7 +111,7 @@ app.put('/:user/topics/:topic', function (req, res) {
   }
 });
 
-app.delete('/:user/topics/:topic', function (req, res) {
+app.delete('/users/:user/topics/:topic', function (req, res) {
   if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {

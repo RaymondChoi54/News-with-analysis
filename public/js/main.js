@@ -32,7 +32,7 @@ $("#openSearch").click(function() {
 $('.btn.btn-info.btn-md').click(function() {
     $.ajax({
         type: 'put',
-        url: 'http://localhost:5000/' + $("#searchBar").prop('name') + '/topics/' + $("#searchBar").val(),
+        url: 'http://localhost:5000/users/' + $("#searchBar").prop('name') + '/topics/' + $("#searchBar").val(),
         success: function(data) {
             console.log("added");
 
@@ -55,7 +55,7 @@ $('#searchBar').bind('keypress', function(e) {
     if (e.keyCode == 13) {
         clear();
         $("#Sidenav").css("width", "0px");
-        $("h3 > b").html("search results: "+ $("#searchBar").val());
+        $("h3 > b").html("search results: " + $("#searchBar").val());
         $('.btn.btn-info.btn-md').show();
         var url = getUrl();
         fillSite(url);
@@ -93,7 +93,7 @@ $('.deleteTopic').click(function() {
     var parent = $(this).parent();
     $.ajax({
         type: 'delete',
-        url: 'http://localhost:5000/' + $(this).prop('name') + '/topics/' + $(this).val(),
+        url: 'http://localhost:5000/users/' + $(this).prop('name') + '/topics/' + $(this).val(),
         success: function(data) {
             parent.remove();
         },
