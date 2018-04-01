@@ -1,5 +1,4 @@
 "use strict";
-
 google.charts.load('current', {'packages':['corechart']});
  $(window).scroll(function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
@@ -13,8 +12,8 @@ document.getElementById("search").onkeypress = function(e) {
         e.preventDefault();
     }
 }
-
-//toggle side navigation
+ 
+// toggle side navigation
 $("#openSide").click(function(){
         $("#Sidenav").css("width","250px");
 });
@@ -66,24 +65,6 @@ $('#saved_button').click(function() {
     $("h3 > b").html("Saved Topics:");
     $("#listTopics").show();
 });
-
-function inputDays() {
-    document.getElementById("graph").innerHTML = "";
-    var topic = $().text();
-    console.log(topic);
-    document.getElementById("inputDays").hidden = false;
-    $('#inputDays').bind('keypress', function(e) {
-        if (e.keyCode==13) {
-                var days = $('#inputDays').val();
-                if (days > 0) {
-                    console.log(topic);
-                    // var days=3;
-                    // Set a callback to run when the Google Visualization API is loaded.
-                    drawChart(topic, days);
-            }
-        }
-    });
-}
 
 $('.loadSaved').click(function() {
     document.getElementById("graph").innerHTML = "";

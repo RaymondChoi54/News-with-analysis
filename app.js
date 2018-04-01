@@ -63,7 +63,7 @@ var checkSession = (req, res, next) => {
 
 app.get('/',  function (req, res) {
 	if (req.session.userInfo && req.cookies.user_sessionid) {	
-	  res.render('index', {
+	  res.render('login', {
       savedTopics: req.session.userInfo.savedTopics, 
 			fullname:req.session.userInfo.fullname, 
 			email: req.session.userInfo.email, 
@@ -91,7 +91,7 @@ app.post('/topic', function (req, res) {
               console.log("save error!!");
               res.redirect('/');
             } else {
-              res.render('index', {
+              res.render('login', {
                 savedTopics: aUser.savedTopics, 
                 fullname: req.session.userInfo.fullname, 
                 email: req.session.userInfo.email, 
@@ -165,52 +165,37 @@ app.get('/usernamecheck', function(req,res){
 
 app.post('/signup', function (req, res) {
 
-	console.log("...");
-	console.log(req.body);
-	  if (req.body.fullname &&req.body.email &&req.body.username &&req.body.password) {
-
-    //
-    // (req.body.username && req.body.password) {   
-    User.findOne({ username: req.body.username}, (err, aUser) => {
-      if (err) {
-          console.log("error /signup");
+  console.log("...");
+  console.log(req.body);
+  if (req.body.fullname &&
+      req.body.email &&
+      req.body.username &&
+      req.body.password) {
+    var topics = new Array();
+    var hash = bcrypt.hashSync(req.body.password, salt);
+      var userData = {
+        fullname: req.body.fullname,
+        email: req.body.email,
+        username: req.body.username,
+        password: hash,
+        savedTopics: []
       }
-      else if(aUser == null){
-
-        console.log("success, this username is unique");
-    		var topics = new Array();
-    		var hash = bcrypt.hashSync(req.body.password, salt);
-    	  var userData = {
-    	      fullname: req.body.fullname,
-    	      email: req.body.email,
-    	      username: req.body.username,
-    	      password: hash,
-    	      savedTopics: []
-    	  }
-    	  console.log("userData is:");
-    	  console.log(userData);
-	
-       //console.log
-      //use schema.create to insert data into the db
-        User.create(userData, function (err, user) {
-          if (err) {
-          	console.log("error");
-          	return res.redirect('/');
-          }
-          else{
-          	console.log("no error");
-          	//req.session.user = userData.email;
-            return res.redirect('/');			//change this to dashboard or something
-          }
-        });
-    }
-    else {
-      console.log("username already exists");
-      res.redirect('/signup');
-
-    }
-  });
-}});
+      console.log("userData is:");
+      console.log(userData);
+  }
+  //console.log
+    //use schema.create to insert data into the db
+    User.create(userData, function (err, user) {
+      if (err) {
+        console.log("error");
+        return res.redirect('/');
+      } else {
+        console.log("no error");
+        return res.redirect('/');
+        //req.session.user = userData.email;
+      }
+    });
+});
 
 app.post('/login', function (req, res) {
   console.log('findOne');
@@ -228,7 +213,7 @@ app.post('/login', function (req, res) {
 			      console.log(req.session);
          	  console.log("req.session.user:");
 			      console.log(req.session.userInfo);
-          	res.render('index', aUser);
+          	res.render('login', aUser);
           }
           else{
           	console.log("Incorrect Password");
