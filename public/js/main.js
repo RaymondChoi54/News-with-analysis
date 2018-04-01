@@ -78,7 +78,8 @@ $('.loadSaved').click(function() {
                     console.log(topic);
                     // var days=3;
                     // Set a callback to run when the Google Visualization API is loaded.
-                    drawChart(topic, days);
+                    google.charts.setOnLoadCallback(drawChart(topic,days));
+                    // drawChart(topic, days);
             }
         }
     });
