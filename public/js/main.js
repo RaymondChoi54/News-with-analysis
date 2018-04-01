@@ -283,7 +283,7 @@ $('#loginSubmit').on('click', function(){
         console.log("validLogin return message " + response.message);
 
         if(response.message == "password_wrong" || response.message == "username_wrong") {   
-            alert("Wrong username or password!, Try again.");
+            alert("Wrong username or password! Try again.");
         }
         if(response.message == "success"){
             $("#loginHeader").text("Login")
