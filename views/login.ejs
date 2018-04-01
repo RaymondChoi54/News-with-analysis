@@ -19,11 +19,7 @@
       <div id="overlay" onclick="off()"></div>
       <div id="info"></div>
       <div id="openSide"><img src="ic_menu_white.png" width="40"></div>
-      <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-      <form class="search" id="search" action="/topic" method="post">
-        <input name="topic" id="searchBar" type="text" placeholder="Search topic" value=""></input>
-        <input type="submit" style="display:none"/>
-      </form>
+      <input id="searchBar" type="text" placeholder="Search topic" name=<%= username %> value=""></input>
     
     <div class="loginClass" hidden="true">
     <div class="loginContent">
@@ -64,11 +60,10 @@
     <h3><b>Top Headlines:</b><a href='#' class='btn btn-info btn-md'><span class='glyphicon glyphicon-plus'></span>add topic</a></h3>
     <ul class="list-group" id="listTopics" style="display: none;">
       <% for (let i = 0; i < savedTopics.length; i++) { %>
-        <form class="deleteTopicForm" action="/topic" method="delete" target="dummyframe">
-          <button class='loadSaved' type="button"><%= savedTopics[i] %></button>
-          <input name="topic" type="text" style="display:none" value=<%= savedTopics[i] %>></input>
-          <input type="submit" class="deleteTopic" value="delete"></input>
-        </form>
+        <div class="deleteTopicForm">
+          <button class='loadSaved' ><%= savedTopics[i] %></button>
+          <button class="deleteTopic" name=<%= username %> value=<%= savedTopics[i] %>>Delete</button>
+        </div>
       <% } %>
     </ul>
     <input id="inputDays" name="days" type="number" placeholder="number of days ago" hidden="true"/>

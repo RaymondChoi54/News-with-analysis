@@ -76,72 +76,67 @@ app.get('/',  function (req, res) {
 	}
 });
 
-app.post('/topic', function (req, res) {
-  if (req.body.topic && req.session.userInfo.username) {
+app.put('/:user/topics/:topic', function (req, res) {
+  if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
         console.log("error!!");
-        return res.redirect('/');
+        return res.sendStatus(400);
       }
       if (aUser != null) {
-        if(aUser.savedTopics.length == aUser.savedTopics.filter(function(topic) { return topic != req.body.topic }).length) {
-          aUser.savedTopics.push(req.body.topic);
+        if(aUser.savedTopics.length == aUser.savedTopics.filter(function(topic) { return topic != req.params.topic }).length) {
+          aUser.savedTopics.push(req.params.topic);
           aUser.save((err1) => {
             if (err1) {
               console.log("save error!!");
-              res.redirect('/');
+              res.sendStatus(400);
             } else {
-              res.render('login', {
-                savedTopics: aUser.savedTopics, 
-                fullname: req.session.userInfo.fullname, 
-                email: req.session.userInfo.email, 
-                username: req.session.userInfo.username,
-                password:  req.session.userInfo.password
-              });
+              req.session.userInfo.savedTopics = aUser.savedTopics;
+              res.sendStatus(200);
               console.log("saved");
             }
           });
         } else {
-          res.redirect('/');
+          res.sendStatus(400);
           console.log("already exists");
         }
       } else {
-        res.redirect('/');
+        res.sendStatus(405);
         console.log("No such user found");
       }
     });
   } else {
     console.log("not logged in");
-    res.redirect('/');
+    res.sendStatus(401);
   }
 });
 
-app.get('/topic', function (req, res) {
-  if (req.query.topic && req.session.userInfo.username) {
+app.delete('/:user/topics/:topic', function (req, res) {
+  if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
         console.log("error!!");
-        return res.redirect('/');
+        return res.sendStatus(405);
       }
       if (aUser != null) {
-        aUser.savedTopics = aUser.savedTopics.filter(function(topic) { return topic != req.query.topic });
+        aUser.savedTopics = aUser.savedTopics.filter(function(topic) { return topic != req.params.topic });
         aUser.save((err1) => {
           if (err1) {
             console.log("delete error!!");
-            res.redirect('/');
+            res.sendStatus(400);
           } else {
-            res.redirect('/');
+            res.sendStatus(202);
             console.log("delete");
           }
         });
       } else {
-        res.redirect('/');
+        res.sendStatus(405);
         console.log("No such user found");
       }
     });
   } else {
-    console.log("no topic selected");
-    res.redirect('/');
+    console.log("Please log in");
+    res.sendStatus(401);
   }
 });
 
