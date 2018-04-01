@@ -160,7 +160,7 @@ app.post('/signup', function (req, res) {
 	      email: req.body.email,
 	      username: req.body.username,
 	      password: hash,
-	      savedTopics: "[]"
+	      savedTopics: []
 	    }
 	    console.log("userData is:");
 	    console.log(userData);
