@@ -281,17 +281,6 @@ app.get('/logout', function (req, res) {
 
 });
  
-  	
-app.get('/search', function (req, res) {
-   if (req.session.userInfo && req.cookies.user_sessionid) {
-   		console.log("clearing");
-        res.clearCookie('user_sessionid');
-        res.redirect('/');
-    } else {
-        res.redirect('/');
-    }
-
-});
 
 app.get('/deleteAcc', function(req, res){
 	User.findByIdAndRemove({_id: req.session.userInfo["_id"]}, 
