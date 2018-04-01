@@ -256,6 +256,21 @@ $('#usernameText').on('change', function(){
     })
 })
 
+$('#loginSubmit').on('click', function(){
+    $.get('/validLogin?username='+$('#username').val()+'&password='+$('#password').val(), function(response){
+        console.log("validLogin return message " + response.message);
+
+        if(response.message == "password_wrong" || response.message == "username_wrong"){   
+            $("#loginHeader").text("Wrong username or password!, Try again.");
+        }
+        if(response.message == "success"){
+            $("#loginHeader").text("Login")
+        }
+    })
+})
+
+//$('#user')
+
 
 function getUrl() {
     var topic = $("#searchBar").val();

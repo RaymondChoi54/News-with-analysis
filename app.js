@@ -163,6 +163,42 @@ app.get('/usernamecheck', function(req,res){
   })
 })
 
+app.get('/validLogin', function(req,res){
+  User.findOne({username:req.query.username}, function(err,user){
+    var msg;
+    if (err) {
+        console.log("error!!");
+        return res.redirect('/login');
+      } else {
+        if (user != null) {
+          console.log(user);
+          msg = "hi there"
+          if(bcrypt.compareSync(req.query.password, user.password)){
+            req.session.userInfo = user; //unique session identifier 
+            console.log("req.session:");
+            console.log(req.session);
+            console.log("req.session.user:");
+            console.log(req.session.userInfo);
+            msg = "success"
+            //res.render('login', user);
+          }
+          else{
+           console.log("-------Incorrect Password");
+            msg = "password_wrong"
+            //return false;
+          }
+          
+        } else {
+          //console.log("--------No such user found");
+          msg = "username_wrong"
+          //return false;
+        }
+          //change this
+        res.json({message: msg})
+      }
+  })
+})
+
 app.post('/signup', function (req, res) {
 
   console.log("...");
