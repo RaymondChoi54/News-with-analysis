@@ -62,62 +62,85 @@ var checkSession = (req, res, next) => {
 
 
 app.get('/',  function (req, res) {
-	if (req.session.userInfo && req.cookies.user_sessionid) {
-	
-		  res.render('index', {savedTopics: req.session.userInfo.savedTopics, 
-		  					fullname:req.session.userInfo.fullname, 
-		  					email: req.session.userInfo.email, 
-		  					username: req.session.userInfo.username,
-		  					password:  req.session.userInfo.password});
-
-
+	if (req.session.userInfo && req.cookies.user_sessionid) {	
+	  res.render('index', {
+      savedTopics: req.session.userInfo.savedTopics, 
+			fullname:req.session.userInfo.fullname, 
+			email: req.session.userInfo.email, 
+			username: req.session.userInfo.username,
+			password:  req.session.userInfo.password
+    });
 	}
-	else{
-		  res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
-
+	else {
+		res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
 	}
 });
 
-// app.get('/', function (req, res) {
-//   User.findOne({email: "raymond@hotmail.com"}, (err, aUser) => {
-//     if (err) {
-//       throw err;
-//     }
-//     if (aUser) {
-//       console.log(aUser)
-//       res.render('index', aUser);
-//     } else {
-//       res.redirect('/');
-//       console.log("error")
-//     }
-//   });
-// });
-
 app.post('/topic', function (req, res) {
-  if (req.body.username && req.body.topic) {
-    User.findOne({ username: req.body.username }, (err, aUser) => {
+  if (req.body.topic) {
+    User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
         console.log("error!!");
         return res.redirect('/');
       }
-
       if (aUser != null) {
-        aUser.savedTopics.push(req.body.topic);
-        aUser.save((err1) => {
-          if (err1) {
-            console.log("save error!!");
-            res.redirect('/');
-          } else {
-            res.redirect('/');
-            console.log("saved");
-          }
-        });
+        if(aUser.savedTopics.length == aUser.savedTopics.filter(function(topic) { return topic != req.body.topic }).length) {
+          aUser.savedTopics.push(req.body.topic);
+          aUser.save((err1) => {
+            if (err1) {
+              console.log("save error!!");
+              res.redirect('/');
+            } else {
+              res.render('index', {
+                savedTopics: aUser.savedTopics, 
+                fullname: req.session.userInfo.fullname, 
+                email: req.session.userInfo.email, 
+                username: req.session.userInfo.username,
+                password:  req.session.userInfo.password
+              });
+              console.log("saved");
+            }
+          });
+        } else {
+          res.redirect('/');
+          console.log("already exists");
+        }
       } else {
+        res.redirect('/');
         console.log("No such user found");
       }
     });
   } else {
     console.log("not logged in");
+    res.redirect('/');
+  }
+});
+
+app.get('/topic', function (req, res) {
+  if (req.query.topic && req.session.userInfo.username) {
+    User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
+      if (err) {
+        console.log("error!!");
+        return res.redirect('/');
+      }
+      if (aUser != null) {
+        aUser.savedTopics = aUser.savedTopics.filter(function(topic) { return topic != req.query.topic });
+        aUser.save((err1) => {
+          if (err1) {
+            console.log("delete error!!");
+            res.redirect('/');
+          } else {
+            res.redirect('/');
+            console.log("delete");
+          }
+        });
+      } else {
+        res.redirect('/');
+        console.log("No such user found");
+      }
+    });
+  } else {
+    console.log("no topic selected");
     res.redirect('/');
   }
 });
@@ -169,16 +192,15 @@ app.post('/login', function (req, res) {
           if(bcrypt.compareSync(req.body.password, aUser.password)){
           	req.session.userInfo = aUser; //unique session identifier 
            	console.log("req.session:");
-			console.log(req.session);
-         	console.log("req.session.user:");
-			console.log(req.session.userInfo);
+			      console.log(req.session);
+         	  console.log("req.session.user:");
+			      console.log(req.session.userInfo);
           	res.render('index', aUser);
           }
           else{
           	console.log("Incorrect Password");
           	return false;
           }
-          
         } else {
           console.log("No such user found");
           return false;

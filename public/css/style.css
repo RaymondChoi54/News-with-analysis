@@ -9,6 +9,7 @@ body {
 }
 
 .list-group {
+	list-style-type: none;
 	display: flex;
  	justify-content: center;
  	flex-direction: column;
@@ -360,11 +361,11 @@ h3 {
           transition-timing-function: ease-in-put;
   font-weight: 900;
 }
-form:not(.search) {
+form:not(.search):not(.deleteTopicForm) {
   padding: 20px 0;
   position: relative;
 }
-form:not(.search) input {
+form:not(.search):not(.deleteTopicForm) input {
   appearance: none;
   outline: 0;
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -381,15 +382,15 @@ form:not(.search) input {
           transition-duration: 0.25s;
   font-weight: 300;
 }
-form:not(.search) input:hover {
+form:not(.search):not(.deleteTopicForm) input:hover {
   background-color: rgba(255, 255, 255, 0.4);
 }
-form:not(.search) input:focus {
+form:not(.search):not(.deleteTopicForm) input:focus {
   background-color: white;
   width: 300px;
   color: #000;
 }
-form:not(.search) button {
+form:not(.search):not(.deleteTopicForm) button {
   appearance: none;
   outline: 0;
   background-color: white;
@@ -403,9 +404,26 @@ form:not(.search) button {
   -webkit-transition-duration: 0.25s;
   transition-duration: 0.25s;
 }
-form:not(.search) button:hover {
+form:not(.search):not(.deleteTopicForm) button:hover {
   background-color: #f5f7f9;
 }
+
+.deleteTopic {
+	background-color: #06709e;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    margin: 5px auto;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.deleteTopicForm {
+    display: inline-block;
+}
+
 /*larger devices*/
 @media screen and (min-width: 1300px) {
 	.articles {
