@@ -292,3 +292,11 @@ app.get('/search', function (req, res) {
     }
 
 });
+
+app.get('/deleteAcc', function(req, res){
+	User.findByIdAndRemove({_id: req.session.user._id}, 
+	   function(err, docs){
+		if(err) res.json(err);
+		else    res.redirect('/');
+	});
+});

@@ -181,7 +181,15 @@ $('#logout_button').click(function() {
         $("h3 > b").html("Top Headlines:");
         fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 });
-
+$('#delete_account').click(function() {
+    
+    console.log("deleting account");
+  	$("/deleteAcc").submit();
+   	clear();
+        $("#Sidenav").css("width","0px");
+        $("h3 > b").html("Top Headlines:");
+        fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
+});
 
 $("#search_button").click(function() {
         clear();
@@ -392,30 +400,30 @@ function appendArticle(item) {
     thumbs_div.appendChild(th_down);
     thumbs_div.appendChild(p2);
     //SENTIMENT ANALYSIS
-    //call the analyze function and pass a callback function which will update the DOM once score arrives
-    // analyzeSentiment(item.title + ". " + item.description, function(val) {
-    //     var val_ = 0;
-    //     if(val < 0) {
-    //         val_ = val * -1.0;
-    //         var temp = val_ + 1.0;
-    //         temp = temp/2.0;
-    //         p2.innerHTML = (temp*100).toFixed(0) + "%";
-    //         var temp2 = 100 - temp*100;
-    //         p1.innerHTML = temp2.toFixed(0) + "%";
-    //     }
-    //     if(val > 0) {
-    //         val_ = val * 1.0;
-    //         var temp = val_ + 1.0;
-    //         temp = temp/2.0;
-    //         p1.innerHTML = (temp*100).toFixed(0) + "%";
-    //         var temp2 = 100 - temp*100;
-    //         p2.innerHTML = temp2.toFixed(0) + "%";
-    //     }
-    //     if(val == 0) {
-    //         p1.innerHTML = "50%";
-    //         p2.innerHTML = "50%";
-    //     }
-    // });
+   // call the analyze function and pass a callback function which will update the DOM once score arrives
+     analyzeSentiment(item.title + ". " + item.description, function(val) {
+         var val_ = 0;
+     if(val < 0) {
+            val_ = val * -1.0;
+            var temp = val_ + 1.0;
+             temp = temp/2.0;
+             p2.innerHTML = (temp*100).toFixed(0) + "%";
+             var temp2 = 100 - temp*100;
+             p1.innerHTML = temp2.toFixed(0) + "%";
+         }
+        if(val > 0) {
+             val_ = val * 1.0;
+             var temp = val_ + 1.0;
+            temp = temp/2.0;
+             p1.innerHTML = (temp*100).toFixed(0) + "%";
+            var temp2 = 100 - temp*100;
+            p2.innerHTML = temp2.toFixed(0) + "%";
+         }
+         if(val == 0) {
+            p1.innerHTML = "50%";
+            p2.innerHTML = "50%";
+         }
+     });
 
     article.appendChild(thumbs_div);
 
