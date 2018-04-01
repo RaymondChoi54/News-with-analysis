@@ -303,6 +303,7 @@ h3 {
 	color:blue;
 }
 
+
 .hiddenName {
 	font-size: 16px;
 }
@@ -323,6 +324,20 @@ h3 {
 	min-width: 350px;
 }
 
+.signupClass2 {
+	background: #4A8CB2;
+	position: absolute;
+	top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+	margin: auto;
+	width: 60%;
+	height: 450px;
+	overflow: hidden;
+	max-width: 600px;
+	min-width: 350px;
+}
 .loginClass {
 	background: #4A8CB2;
 	position: absolute;
