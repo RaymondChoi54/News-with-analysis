@@ -7,6 +7,13 @@ google.charts.load('current', {'packages':['corechart']});
     }
  });
 
+document.getElementById("search").onkeypress = function(e) {
+    var key = e.charCode || e.keyCode || 0;     
+    if (key == 13) {
+        e.preventDefault();
+    }
+}
+
 //toggle side navigation
 $("#openSide").click(function(){
         $("#Sidenav").css("width","250px");
@@ -96,6 +103,10 @@ $('.loadSaved').click(function() {
     });
 });
 
+$('.deleteTopic').click(function() {
+    $(this).parent().submit();
+    $(this).parent().remove();
+});
 
 function drawChart(topic, days) {
     console.log(topic);
@@ -140,7 +151,7 @@ function drawChart(topic, days) {
     chart.draw(data, options);
   }
 
-function getRow(url,isodate, callback) {
+function getRow(url, isodate, callback) {
     $.ajax({
         type:'GET',
         url:url,
@@ -184,7 +195,9 @@ $('#login_button').click(function() {
 
 $('#logout_button').click(function() {
     //logout page
-   clear();
+    console.log("logging out");
+  	$("/logout").submit();
+   	clear();
         $("#Sidenav").css("width","0px");
         $("h3 > b").html("Top Headlines:");
         fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
