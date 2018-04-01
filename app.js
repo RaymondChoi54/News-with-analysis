@@ -294,9 +294,17 @@ app.get('/search', function (req, res) {
 });
 
 app.get('/deleteAcc', function(req, res){
-	User.findByIdAndRemove({_id: req.session.user._id}, 
+	User.findByIdAndRemove({_id: req.session.userInfo["_id"]}, 
 	   function(err, docs){
-		if(err) res.json(err);
-		else    res.redirect('/');
+		if(err){
+			 res.json(err);
+		}
+		else {
+			if (req.session.userInfo && req.cookies.user_sessionid) {
+   				console.log("clearing after deleting account");
+        		res.clearCookie('user_sessionid');
+        	}	
+			res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
+		}
 	});
 });
