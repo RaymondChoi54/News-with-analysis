@@ -252,10 +252,12 @@ app.post('/login', function (req, res) {
           	res.render('login', aUser);
           }
           else{
+          	//res.render('incorrectpass', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
           	console.log("Incorrect Password");
           	return false;
           }
         } else {
+          //res.render('incorrectpass', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
           console.log("No such user found");
           return false;
         }  //change this
@@ -278,4 +280,15 @@ app.get('/logout', function (req, res) {
     }
 
 });
-  
+ 
+  	
+app.get('/search', function (req, res) {
+   if (req.session.userInfo && req.cookies.user_sessionid) {
+   		console.log("clearing");
+        res.clearCookie('user_sessionid');
+        res.redirect('/');
+    } else {
+        res.redirect('/');
+    }
+
+});

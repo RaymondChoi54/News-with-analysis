@@ -44,16 +44,13 @@ $('.btn.btn-info.btn-md').click(function() {
 
 //if user pressed enter search
 $('#searchBar').bind('keypress', function(e) {
-    if (e.keyCode==13) {
+    if (e.keyCode == 13) {
         clear();
-        $("#Sidenav").css("width","0px");
+        $("#Sidenav").css("width", "0px");
         $("h3 > b").html("search results: "+ $("#searchBar").val());
         $('.btn.btn-info.btn-md').show();
         var url = getUrl();
         fillSite(url);
-
-        //console.log("trump history: ");
-        //sentimentHistory("trump");
     }
 });
 
@@ -78,7 +75,7 @@ $('.loadSaved').click(function() {
                     console.log(topic);
                     // var days=3;
                     // Set a callback to run when the Google Visualization API is loaded.
-                    drawChart(topic, days);
+                    google.charts.setOnLoadCallback(drawChart(topic,days));
             }
         }
     });
@@ -92,7 +89,6 @@ $('.deleteTopic').click(function() {
 function drawChart(topic, days) {
     console.log(topic);
     var rows = [];
-    //let today = new Date();
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'date');
     data.addColumn('number', 'SENTIMENT');
@@ -101,7 +97,7 @@ function drawChart(topic, days) {
     let today = new Date();
     var currentDay = new Date(today.setDate(today.getDate() - days));
 
-    for (let i=0;i<days;i++) {
+    for (let i = 0; i < days; i++) {
         var from = currentDay.toISOString().substr(0,10)   //substr(0,10) to remove time
         currentDay.setDate(currentDay.getDate()+1)
         var to = currentDay.toISOString().substr(0,10)
@@ -141,8 +137,7 @@ function getRow(url, isodate, callback) {
             console.log(data);
             console.log(data.articles.length);
             var score = 0;
-            for (let x=0;x<data.articles.length;x++) {
-                // var analyzescore = 1;
+            for (let x=0; x < data.articles.length; x++) {
                 analyzeSentimentSync((data.articles[x].title + ". " + data.articles[x].description), function(val){
                     score = score + val;
                 });
@@ -166,11 +161,14 @@ $('#signup_button').click(function() {
 });
 
 
+
+
 $('#login_button').click(function() {
     //login page
     clear();
     $("#Sidenav").css("width","0px");
     $(".loginClass").show();
+    
 });
 
 
@@ -249,7 +247,6 @@ $('#usernameText').on('change', function(){
             $("#signupSubmit").prop("value","Username already taken!");
         }
         else{
-            //$("#userText").hide()
             $("#signupSubmit").attr("disabled", false);
             $("#signupSubmit").prop("value","Submit");
         }
@@ -270,6 +267,7 @@ $('#loginSubmit').on('click', function(){
 })
 
 //$('#user')
+
 
 
 function getUrl() {

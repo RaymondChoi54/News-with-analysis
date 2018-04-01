@@ -42,36 +42,30 @@
       <h1>Register</h1>
 
       <form class="form" action="/signup" method="post">
-        <input name="fullname" type="text" id="nameText" placeholder="Full Name" />
-        <input name="email" type="text" id="email" placeholder="Email" />
-        <input name="username" type="text" id="usernameText" placeholder="Username" />
-        <input name="password" type="password" placeholder="Password" />
 
+        <input name="fullname" type="text" id="nameText" placeholder="Full Name" required />
+        <input name="email" type="text" id="email" placeholder="Email" required />
+        <input name="username" type="text" id="usernameText" placeholder="Username" required />
+        <input name="password" type="password"  placeholder="Password" required />
         <input type="submit" id="signupSubmit" value="Submit" class="btn btn-default"/>
-       
+
       </form>
       <h1 id="userText">Username is already taken.</h1>
+      <h1 id="allFields">All Fields must be filled. </h1>
+      
     </div>
     </div>
-    
-  <!--  <div class="logoutClass" hidden="true">
-    <form action ="/logout" method="get">
-    	<input type="submit"/>
-    </form>
-    </div>
-   --> 	
     
     <div id="openSearch"> <img src="ic_search_white.png" width="40"> </div>
       <div id="Sidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn">&times;</a>
       <a href="#search" id="search_button">Search</a>
-      <a href="#saved" id="saved_button">Saved Topics</a>
       <a href="#signup" id="signup_button">Sign Up</a>
       <a href="#login" id="login_button">Login</a>
-      <!-- <a href="/logout" id="logout_button" hidden="true">Logout</a> -->
     </div>
 
-    <h3><b>Top Headlines:</b><a href='#' class='btn btn-info btn-md'><span class='glyphicon glyphicon-plus'></span>add topic</a></h3>
+    <h3><b>Top Headlines:</b>
+    </h3>
     <ul class="list-group" id="listTopics" style="display: none;">
       <% for (let i = 0; i < savedTopics.length; i++) { %>
         <form class="deleteTopicForm" action="/topic" method="delete" target="dummyframe">
