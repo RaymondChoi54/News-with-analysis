@@ -145,39 +145,72 @@ app.get('/topic', function (req, res) {
   }
 });
 
+app.get('/usernamecheck', function(req,res){
+  User.findOne({username: req.query.username}, function(err,user){
+    if(err){
+      console.log(err);
+    }
+    var msg;
+    if(user != null){
+      msg = "exist"
+      console.log("user exists")
+    }
+    else{
+      msg = "not exist"
+      console.log("not exist")
+    }
+    res.json({message: msg})
+  })
+})
+
 app.post('/signup', function (req, res) {
 
 	console.log("...");
 	console.log(req.body);
-	if (req.body.fullname &&
-	  	req.body.email &&
-	    req.body.username &&
-	    req.body.password) {
-		var topics = new Array();
-		var hash = bcrypt.hashSync(req.body.password, salt);
-	    var userData = {
-	      fullname: req.body.fullname,
-	      email: req.body.email,
-	      username: req.body.username,
-	      password: hash,
-	      savedTopics: []
-	    }
-	    console.log("userData is:");
-	    console.log(userData);
-	}
-	//console.log
-    //use schema.create to insert data into the db
-    User.create(userData, function (err, user) {
+	  if (req.body.fullname &&req.body.email &&req.body.username &&req.body.password) {
+
+    //
+    // (req.body.username && req.body.password) {   
+    User.findOne({ username: req.body.username}, (err, aUser) => {
       if (err) {
-      	console.log("error");
-      	return res.redirect('/');
-      } else {
-      	console.log("no error");
-      	//req.session.user = userData.email;
-        return res.redirect('/');			//change this to dashboard or something
+          console.log("error /signup");
       }
-    });
-});
+      else if(aUser == null){
+
+        console.log("success, this username is unique");
+    		var topics = new Array();
+    		var hash = bcrypt.hashSync(req.body.password, salt);
+    	  var userData = {
+    	      fullname: req.body.fullname,
+    	      email: req.body.email,
+    	      username: req.body.username,
+    	      password: hash,
+    	      savedTopics: []
+    	  }
+    	  console.log("userData is:");
+    	  console.log(userData);
+	
+       //console.log
+      //use schema.create to insert data into the db
+        User.create(userData, function (err, user) {
+          if (err) {
+          	console.log("error");
+          	return res.redirect('/');
+          }
+          else{
+          	console.log("no error");
+          	//req.session.user = userData.email;
+            return res.redirect('/');			//change this to dashboard or something
+          }
+        });
+    }
+    else {
+      console.log("username already exists");
+      res.redirect('/signup');
+
+    }
+  });
+}});
 
 app.post('/login', function (req, res) {
   console.log('findOne');

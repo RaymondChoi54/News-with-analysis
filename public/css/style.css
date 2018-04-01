@@ -293,6 +293,10 @@ h3 {
    color: gray;
 }
 
+#userText{
+	
+}
+
 .form login[type="text"] {
     width: 200px;
 	height: 200px;

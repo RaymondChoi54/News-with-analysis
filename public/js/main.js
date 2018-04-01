@@ -257,6 +257,23 @@ $(document).on("mouseleave",".thumbnail", function(){
     
 })
 
+$('#usernameText').on('change', function(){
+    $.get('/usernamecheck?username=' + $('#usernameText').val().toLowerCase(), function(response){
+        console.log(response.message)
+        //$("#userText").show()
+
+        if(response.message == "exist"){
+            //$("#userText").show()
+            $("#signupSubmit").attr("disabled", true);
+            $("#signupSubmit").prop("value","Username already taken!");
+        }
+        else{
+            //$("#userText").hide()
+            $("#signupSubmit").attr("disabled", false);
+            $("#signupSubmit").prop("value","Submit");
+        }
+    })
+})
 
 
 function getUrl() {
