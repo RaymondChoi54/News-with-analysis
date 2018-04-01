@@ -68,7 +68,7 @@
     </h3>
     <ul class="list-group" id="listTopics" style="display: none;">
       <% for (let i = 0; i < savedTopics.length; i++) { %>
-        <form class="deleteTopicForm" action="/topic" method="delete" target="dummyframe">
+        <form class="deleteTopicForm" action="/topic" method="put" target="dummyframe">
           <button class='loadSaved' type="button"><%= savedTopics[i] %></button>
           <input name="topic" type="text" style="display:none" value=<%= savedTopics[i] %>></input>
           <input type="submit" class="deleteTopic" value="delete"></input>

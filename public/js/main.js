@@ -5,13 +5,6 @@ google.charts.load('current', {'packages':['corechart']});
         moreArticles()
     }
  });
-
-document.getElementById("search").onkeypress = function(e) {
-    var key = e.charCode || e.keyCode || 0;     
-    if (key == 13) {
-        e.preventDefault();
-    }
-}
  
 // toggle side navigation
 $("#openSide").click(function(){
@@ -37,9 +30,24 @@ $("#openSearch").click(function() {
 });
 
 $('.btn.btn-info.btn-md').click(function() {
-    var topic = $("#searchBar").val();
-    console.log("save:" + topic);
-    $("#search").submit();
+    $.ajax({
+        type: 'put',
+        url: 'http://localhost:5000/' + $("#searchBar").prop('name') + '/topics/' + $("#searchBar").val(),
+        success: function(data) {
+            console.log("added");
+
+            // var topic = $(
+            //             '<div class="deleteTopicForm"><button class="loadSaved" >' + $("#searchBar").val() 
+            //             + '</button><button class="deleteTopic" name=' + $("#searchBar").prop('name')
+            //             + ' value=' + $("#searchBar").val() + '>Delete</button></div>');
+            
+            // $('.list-group').append(topic);
+            window.location.href = "http://localhost:5000/";
+        },
+        error: function(err) {
+            alert("Topic has already been saved");
+        }
+    });
 });
 
 //if user pressed enter search
@@ -82,8 +90,17 @@ $('.loadSaved').click(function() {
 });
 
 $('.deleteTopic').click(function() {
-    $(this).parent().submit();
-    $(this).parent().remove();
+    var parent = $(this).parent();
+    $.ajax({
+        type: 'delete',
+        url: 'http://localhost:5000/' + $(this).prop('name') + '/topics/' + $(this).val(),
+        success: function(data) {
+            parent.remove();
+        },
+        error: function(err) {
+            alert("Delete failed");
+        }
+    });
 });
 
 function drawChart(topic, days) {
