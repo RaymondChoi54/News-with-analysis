@@ -63,7 +63,7 @@ var checkSession = (req, res, next) => {
 
 app.get('/',  function (req, res) {
 	if (req.session.userInfo && req.cookies.user_sessionid) {	
-	  res.render('index', {
+	  res.render('login', {
       savedTopics: req.session.userInfo.savedTopics, 
 			fullname:req.session.userInfo.fullname, 
 			email: req.session.userInfo.email, 
@@ -91,7 +91,7 @@ app.post('/topic', function (req, res) {
               console.log("save error!!");
               res.redirect('/');
             } else {
-              res.render('index', {
+              res.render('login', {
                 savedTopics: aUser.savedTopics, 
                 fullname: req.session.userInfo.fullname, 
                 email: req.session.userInfo.email, 
@@ -174,7 +174,6 @@ app.post('/signup', function (req, res) {
       } else {
       	console.log("no error");
       	//req.session.user = userData.email;
-        return res.redirect('/');			//change this to dashboard or something
       }
     });
 });
@@ -195,7 +194,7 @@ app.post('/login', function (req, res) {
 			      console.log(req.session);
          	  console.log("req.session.user:");
 			      console.log(req.session.userInfo);
-          	res.render('index', aUser);
+          	res.render('login', aUser);
           }
           else{
           	console.log("Incorrect Password");
