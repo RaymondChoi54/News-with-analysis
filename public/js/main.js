@@ -7,6 +7,13 @@ google.charts.load('current', {'packages':['corechart']});
     }
  });
 
+document.getElementById("search").onkeypress = function(e) {
+    var key = e.charCode || e.keyCode || 0;     
+    if (key == 13) {
+        e.preventDefault();
+    }
+}
+
 //toggle side navigation
 $("#openSide").click(function(){
         $("#Sidenav").css("width","250px");

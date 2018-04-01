@@ -77,7 +77,7 @@ app.get('/',  function (req, res) {
 });
 
 app.post('/topic', function (req, res) {
-  if (req.body.topic) {
+  if (req.body.topic && req.session.userInfo.username) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
         console.log("error!!");
