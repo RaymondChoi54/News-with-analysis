@@ -44,9 +44,9 @@ $('.btn.btn-info.btn-md').click(function() {
 
 //if user pressed enter search
 $('#searchBar').bind('keypress', function(e) {
-    if (e.keyCode==13) {
+    if (e.keyCode == 13) {
         clear();
-        $("#Sidenav").css("width","0px");
+        $("#Sidenav").css("width", "0px");
         $("h3 > b").html("search results: "+ $("#searchBar").val());
         $('.btn.btn-info.btn-md').show();
         var url = getUrl();
@@ -97,7 +97,7 @@ function drawChart(topic, days) {
     let today = new Date();
     var currentDay = new Date(today.setDate(today.getDate() - days));
 
-    for (let i=0;i<days;i++) {
+    for (let i = 0; i < days; i++) {
         var from = currentDay.toISOString().substr(0,10)   //substr(0,10) to remove time
         currentDay.setDate(currentDay.getDate()+1)
         var to = currentDay.toISOString().substr(0,10)
@@ -137,7 +137,7 @@ function getRow(url, isodate, callback) {
             console.log(data);
             console.log(data.articles.length);
             var score = 0;
-            for (let x=0;x<data.articles.length;x++) {
+            for (let x=0; x < data.articles.length; x++) {
                 analyzeSentimentSync((data.articles[x].title + ". " + data.articles[x].description), function(val){
                     score = score + val;
                 });
