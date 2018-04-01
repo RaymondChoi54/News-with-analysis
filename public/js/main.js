@@ -160,12 +160,20 @@ $('#signup_button').click(function() {
     $(".signupClass").show();
 });
 
+$('#signup_button2').click(function() {
+    //signup page
+    clear();
+    $("#Sidenav").css("width","0px");
+    $(".signupClass2").show();
+});
+
 
 $('#login_button').click(function() {
     //login page
     clear();
     $("#Sidenav").css("width","0px");
     $(".loginClass").show();
+    
 });
 
 
@@ -249,6 +257,7 @@ $('#usernameText').on('change', function(){
         }
     })
 })
+
 
 
 function getUrl() {
