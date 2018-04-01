@@ -100,24 +100,34 @@ $('.loadSaved').click(function() {
 function drawChart(topic, days) {
     console.log(topic);
     var rows = [];
-    let d = new Date();
+    //let today = new Date();
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'date');
     data.addColumn('number', 'SENTIMENT');
+
+    //set current date to the first date (subtract days from current date)
+    let today = new Date();
+    var currentDay = new Date(today.setDate(today.getDate() - days));
+
     for (let i=0;i<days;i++) {
-        let lastdate = d;
-        console.log("new date="+d.toISOString());
-        var isolastdate = d.toISOString();
-        d.setDate(d.getDate() - 1);
-        console.log("old date=" + d.toISOString());
-        var isodate = d.toISOString();
-        let url = "https://newsapi.org/v2/everything?language=en" + "&from="+isodate+ "&to="+ lastdate
-        + "&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77";
-        getRow(url,isodate,function(row) {
+        var from = currentDay.toISOString().substr(0,10)   //substr(0,10) to remove time
+        currentDay.setDate(currentDay.getDate()+1)
+        var to = currentDay.toISOString().substr(0,10)
+        //console.log(from + "...." + to)
+
+        var url = "https://newsapi.org/v2/everything?language=en" 
+        + "&from="+ from
+        + "&to="+ to
+        + "&sortBy=popularity"
+        + "&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77"
+        + "&pageSize=" + 5;
+
+        getRow(url,from,function(row) {
             data.addRow(row);
             console.log("add row");
-        })
+        });
     }
+    
     // Set chart options
     var options = {'title': topic + ": " + "sentiment analysis past " + days +" days",
                    'width':600,
@@ -141,27 +151,9 @@ function getRow(url,isodate, callback) {
             var score = 0;
             for (let x=0;x<data.articles.length;x++) {
                 // var analyzescore = 1;
-                analyzeSentimentSync(data.articles[x].title, function(val){
-                    if(val < 0) {
-                        val = val * -1.0;
-                        var temp = val + 1.0;
-                        temp = temp/2.0;
-                        var temp2 = 100 - temp*100;
-                        score = score +temp2;
-                    }
-                    if(val > 0) {
-                        val = val * 1.0;
-                        var temp = val + 1.0;
-                        temp = (temp/2.0)*100;
-                        score = score +temp;
-                    }
-                    if (val == 0) {
-                        score = score + 50
-                    }
-                    console.log(val);
-                    // score = score +val;
+                analyzeSentimentSync((data.articles[x].title + ". " + data.articles[x].description), function(val){
+                    score = score + val;
                 });
-                // score = score +analyzescore;
             }
             var sentiment = score / data.articles.length;
             console.log(isodate);
@@ -293,10 +285,7 @@ function fillSite(url) {
             })
         }
     });
-    //console.log("trump history: ");
-    //sentimentHistory("trump");
 
-    
 }
 
 //add more articles to page
@@ -480,76 +469,15 @@ function analyzeSentiment(headline_description, callback) {
 
 }
 
-/*function sentimentHistory(topic){
 
-    //var topic = $("#searchBar").val();
-   //var sort = $("#sort-by").val();
-    
-    //var limit = $("#limit").val();
-    //var num_art = document.getElementsByClassName("articles")[0].children.length;
-
-    //var now = new Date();
-    //var monthAgo = now.setMonth(now.getMonth() - 1);
-    //var month = monthAgo.getMonth();
-    //var day = monthAgo.getDate();
-    //from = "2018-" + month + day;
-    //to = 
-    
-    //var page = num_art / parseInt(limit) + 1
-
-    var now = new Date();
-    now.setMonth(now.getMonth() - 1);
-    var topic = "trump";
-    var sort = "popularity";
-    var lang = "en"
-    var limit = 5;
-    var url = "";
-
-    var from = "";
-    var to = "";
-
-    var sentimentArray = [] //array containing sentiment scores over last n days
-
-    for(var i = 0; i < 10; i++){
-        //day = current.getDate();
-        console.log(now);
-        console.log(now.getFullYear() +"-"+ (now.getMonth()+1) + "-"+ now.getDate());
-        from = now.getFullYear() +"-"+ (now.getMonth()+1) + "-"+ now.getDate()
-        now.setDate(now.getDate() + 1);
-        to = now.getFullYear() +"-"+ (now.getMonth()+1) + "-"+ now.getDate()
-        //from =
-        //console.log()
-    
-    
-        url = "https://newsapi.org/v2/everything?language=" + lang + "&sortBy=" + sort + "&from=" + from + "&to=" + to + "&pageSize=" + limit + "&q=" + topic + "&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77";
-
-        $.ajax({
-            type:'GET',
-            url:url,
-            success:function(data) {
-                //console.log("results loop " + i)
-                //console.log(data.articles);
-                $.each(data.articles, function(i, item) {
-                    //appendArticle(item);
-                    console.log(i +": ");
-                    console.log(item.title)
-                })
-            }
-        });
-    }
-
-
-}
-*/
-
-function analyzeSentimentSync(headline, callback) {
+function analyzeSentimentSync(headline_description, callback) {
     var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
     var score = 3;
     $.ajax({
         type        : "POST",
         url         : "https://language.googleapis.com/v1/documents:analyzeSentiment?key="+ mykey,
         contentType : "application/json",
-        data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline+'"}}',
+        data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline_description+'"}}',
         async: false,
         success     : function(data_) {
             score = data_.documentSentiment.score;
@@ -561,128 +489,4 @@ function analyzeSentimentSync(headline, callback) {
     });
 }
 
-//var mongoose = require('mongoose');
-//var bcrypt = require('bcrypt');
-//var express = require('express');
-//var app = express();
-//var bodyParser = require('body-parser');
 
-//connect to MongoDB
-// mongoose.connect('mongodb://user1:news-it123@ds117469.mlab.com:17469/news-it');
-// var db = mongoose.connection;
-
-
-// //handle mongo error
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function () {
-//   // we're connected!
-// });
-
-// var Users = new mongoose.Schema({
-// 	fullname: {
-// 		type: String,
-// 		required: true,
-// 		trim: true
-// 	},
-// 	email: {
-// 		type: String,		
-// 		required: true,
-// 		unique: true,
-// 		trim: true
-// 	},
-// 	username: {
-// 		type: String,
-// 		required: true,
-// 		trim: true
-// 	},
-// 	password: {
-// 		type: String,
-// 		required: true
-// 	}
-	
-// });
-
-/*
-//hashing a password before saving it to the database
-Users.pre('save', function (next) {
-  var user = this;
-  bcrypt.hash(user.password, 10, function (err, hash){
-    if (err) {
-      return next(err);
-    }
-    user.password = hash;
-    next();
-  })
-});
-
-*/
-
-// var User = mongoose.model('User', Users);
-// module.exports = User;
-// var express = require('express');
-// var router = express.Router();
-
-
-// //POST route for updating data
-// router.post('/', function (req, res, next) {
-// /*
-//   // confirm that user typed same password twice
-//   if (req.body.password !== req.body.passwordConf) {
-//     var err = new Error('Passwords do not match.');
-//     err.status = 400;
-//     return next(err);
-//   }
-// */
-//   if (req.body.fullname &&
-//   	req.body.email &&
-//     req.body.username &&
-//     req.body.password) {
-
-//     var userData = {
-//       fullname: req.body.fullname,
-//       email: req.body.email,
-//       username: req.body.username,
-//       password: req.body.password,
-//     }
-
-//     //use schema.create to insert data into the db
-//     User.create(userData, function (err, user) {
-//       if (err) {
-//         return next(err)
-//       } else {
-//         return res.redirect('/profile');
-//       }
-//     });
-
-//   } else {
-//     var err = new Error('All fields have to be filled out');
-//     err.status = 400;
-//     return next(err);
-//   }
-
-// });
-
-// // POST route after registering
-// router.post('/profile', function (req, res, next) {
-//   return res.send('POST profile');
-// });
-// =======
-
-// function analyzeSentiment(headline, callback) {
-//     var mykey = "AIzaSyBJ-qSBynfKnHAF7poPXbqgyS0yzdm30_c";
-//     var score = 3;
-//     $.ajax({
-//         type        : "POST",
-//         url         : "https://language.googleapis.com/v1/documents:analyzeSentiment?key="+ mykey,
-//         contentType : "application/json",
-//         data        : '{"document":{"type":"PLAIN_TEXT","content":"'+headline+'"}}',
-//         success     : function(data_) {
-//             score = data_.documentSentiment.score;
-//             callback(score);
-//         },
-//         error       : function(err) {
-//             console.log(err);
-//         }
-//     });
-
-// }
