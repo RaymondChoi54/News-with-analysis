@@ -51,9 +51,6 @@ $('#searchBar').bind('keypress', function(e) {
         $('.btn.btn-info.btn-md').show();
         var url = getUrl();
         fillSite(url);
-
-        //console.log("trump history: ");
-        //sentimentHistory("trump");
     }
 });
 
@@ -79,7 +76,6 @@ $('.loadSaved').click(function() {
                     // var days=3;
                     // Set a callback to run when the Google Visualization API is loaded.
                     google.charts.setOnLoadCallback(drawChart(topic,days));
-                    // drawChart(topic, days);
             }
         }
     });
@@ -93,7 +89,6 @@ $('.deleteTopic').click(function() {
 function drawChart(topic, days) {
     console.log(topic);
     var rows = [];
-    //let today = new Date();
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'date');
     data.addColumn('number', 'SENTIMENT');
@@ -143,7 +138,6 @@ function getRow(url, isodate, callback) {
             console.log(data.articles.length);
             var score = 0;
             for (let x=0;x<data.articles.length;x++) {
-                // var analyzescore = 1;
                 analyzeSentimentSync((data.articles[x].title + ". " + data.articles[x].description), function(val){
                     score = score + val;
                 });
@@ -250,7 +244,6 @@ $('#usernameText').on('change', function(){
             $("#signupSubmit").prop("value","Username already taken!");
         }
         else{
-            //$("#userText").hide()
             $("#signupSubmit").attr("disabled", false);
             $("#signupSubmit").prop("value","Submit");
         }
