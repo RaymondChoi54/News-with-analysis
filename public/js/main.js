@@ -278,8 +278,10 @@ $('#usernameText').on('change', function(){
 
 $('#loginSubmit').on('click', function(){
     $.get('/validLogin?username='+$('#username').val()+'&password='+$('#password').val(), function(response){
-
-        if(response.message == "password_wrong" || response.message == "username_wrong") {   
+		if($('#username').val()=="" ||$('#password').val()==""){
+			  alert("All fields must be filled.");
+		}
+        else if(response.message == "password_wrong" || response.message == "username_wrong") {   
             alert("Wrong username or password! Try again.");
         }
         if(response.message == "success"){
