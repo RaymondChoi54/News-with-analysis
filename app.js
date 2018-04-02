@@ -72,7 +72,7 @@ app.put('/users/:user/topics/:topic', function (req, res) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
         console.log("error!!");
-        return res.sendStatus(400);
+        return res.sendStatus(404);
       }
       if (aUser != null) {
         if(aUser.savedTopics.length == aUser.savedTopics.filter(function(topic) { return topic != req.params.topic }).length) {
@@ -80,7 +80,7 @@ app.put('/users/:user/topics/:topic', function (req, res) {
           aUser.save((err1) => {
             if (err1) {
               console.log("save error!!");
-              res.sendStatus(400);
+              res.sendStatus(404);
             } else {
               req.session.userInfo.savedTopics = aUser.savedTopics;
               res.sendStatus(200);
@@ -92,7 +92,7 @@ app.put('/users/:user/topics/:topic', function (req, res) {
           console.log("already exists");
         }
       } else {
-        res.sendStatus(405);
+        res.sendStatus(404);
         console.log("No such user found");
       }
     });
@@ -107,21 +107,21 @@ app.delete('/users/:user/topics/:topic', function (req, res) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
         console.log("error!!");
-        return res.sendStatus(405);
+        return res.sendStatus(404);
       }
       if (aUser != null) {
         aUser.savedTopics = aUser.savedTopics.filter(function(topic) { return topic != req.params.topic });
         aUser.save((err1) => {
           if (err1) {
             console.log("delete error!!");
-            res.sendStatus(400);
+            res.sendStatus(404);
           } else {
             res.sendStatus(202);
             console.log("delete");
           }
         });
       } else {
-        res.sendStatus(405);
+        res.sendStatus(404);
         console.log("No such user found");
       }
     });
