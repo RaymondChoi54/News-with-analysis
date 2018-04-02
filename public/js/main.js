@@ -30,11 +30,14 @@ $("#openSearch").click(function() {
 });
 
 $('.btn.btn-info.btn-md').click(function() {
+    var url = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    //http://localhost:5000
+    console.log(url);
     $.ajax({
         type: 'put',
-        url: 'http://localhost:5000/users/' + $("#searchBar").prop('name') + '/topics/' + $("#searchBar").val(),
+        url: url+'/users/' + $("#searchBar").prop('name') + '/topics/' + $("#searchBar").val(),
         success: function(data) {
-            window.location.href = "http://localhost:5000/";
+            window.location.href = url;
         },
         error: function(err) {
             alert("Topic has already been saved");
@@ -79,10 +82,13 @@ $('.loadSaved').click(function() {
 });
 
 $('.deleteTopic').click(function() {
+    var url = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    //http://localhost:5000
+    console.log(url);
     var parent = $(this).parent();
     $.ajax({
         type: 'delete',
-        url: 'http://localhost:5000/users/' + $(this).prop('name') + '/topics/' + $(this).val(),
+        url: url+'/users/' + $(this).prop('name') + '/topics/' + $(this).val(),
         success: function(data) {
             parent.remove();
         },
