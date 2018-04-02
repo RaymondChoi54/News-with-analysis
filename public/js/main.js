@@ -81,6 +81,22 @@ $('.loadSaved').click(function() {
     });
 });
 
+$('#delete_button').click(function() {
+    var url = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+    console.log(url);
+    var parent = $(this).parent();
+    $.ajax({
+        type: 'delete',
+        url: url+'/users/' + $(this).prop('name'),
+        success: function(data) {
+            window.location.href = url;
+        },
+        error: function(err) {
+            alert("Delete failed");
+        }
+    });
+});
+
 $('.deleteTopic').click(function() {
     var url = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     //http://localhost:5000

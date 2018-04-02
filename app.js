@@ -221,17 +221,21 @@ app.get('/logout', function (req, res) {
 });
  
 //delete current user account from database
-app.get('/deleteAcc', function(req, res){
-	User.findByIdAndRemove({_id: req.session.userInfo["_id"]}, 
-	   function(err, docs){
-		if(err){
-			 res.json(err);
-		}
-		else {
-			if (req.session.userInfo && req.cookies.user_sessionid) {
-        		res.clearCookie('user_sessionid');
-        	}	
-			res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
-		}
-	});
+app.delete('/users/:user', function(req, res) {
+  if (req.session.userInfo && req.session.userInfo.username == req.params.user) {
+  	User.findOneAndRemove({ username: req.session.userInfo.username }, function(err, docs) {
+  		if(err) {
+  			 res.json(err);
+  		}
+  		else {
+  			if (req.session.userInfo && req.cookies.user_sessionid) {
+          res.clearCookie('user_sessionid');
+        }	
+        res.sendStatus(202);
+  		  // res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
+      }
+    });
+  } else {
+    res.sendStatus(401);
+  }
 });
