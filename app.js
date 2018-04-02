@@ -71,7 +71,6 @@ app.put('/users/:user/topics/:topic', function (req, res) {
   if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
-        console.log("error!!");
         return res.sendStatus(400);
       }
       if (aUser != null) {
@@ -79,25 +78,20 @@ app.put('/users/:user/topics/:topic', function (req, res) {
           aUser.savedTopics.push(req.params.topic);
           aUser.save((err1) => {
             if (err1) {
-              console.log("save error!!");
               res.sendStatus(400);
             } else {
               req.session.userInfo.savedTopics = aUser.savedTopics;
               res.sendStatus(200);
-              console.log("saved");
             }
           });
         } else {
           res.sendStatus(400);
-          console.log("already exists");
         }
       } else {
         res.sendStatus(405);
-        console.log("No such user found");
       }
     });
   } else {
-    console.log("not logged in");
     res.sendStatus(401);
   }
 });
@@ -106,27 +100,22 @@ app.delete('/users/:user/topics/:topic', function (req, res) {
   if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
-        console.log("error!!");
         return res.sendStatus(405);
       }
       if (aUser != null) {
         aUser.savedTopics = aUser.savedTopics.filter(function(topic) { return topic != req.params.topic });
         aUser.save((err1) => {
           if (err1) {
-            console.log("delete error!!");
             res.sendStatus(400);
           } else {
             res.sendStatus(202);
-            console.log("delete");
           }
         });
       } else {
         res.sendStatus(405);
-        console.log("No such user found");
       }
     });
   } else {
-    console.log("Please log in");
     res.sendStatus(401);
   }
 });
@@ -139,11 +128,9 @@ app.get('/usernamecheck', function(req,res){
     var msg;
     if(user != null){
       msg = "exist"
-      console.log("user exists")
     }
     else{
       msg = "not exist"
-      console.log("not exist")
     }
     res.json({message: msg})
   })
@@ -153,22 +140,15 @@ app.get('/validLogin', function(req,res){
   User.findOne({username:req.query.username}, function(err,user){
     var msg;
     if (err) {
-        console.log("error!!");
         return res.redirect('/login');
       } else {
         if (user != null) {
-          console.log(user);
           msg = "hi there"
           if(bcrypt.compareSync(req.query.password, user.password)){
             req.session.userInfo = user; //unique session identifier 
-            console.log("req.session:");
-            console.log(req.session);
-            console.log("req.session.user:");
-            console.log(req.session.userInfo);
             msg = "success"
           }
           else{
-           console.log("-------Incorrect Password");
             msg = "password_wrong"
           }
           
@@ -181,9 +161,6 @@ app.get('/validLogin', function(req,res){
 })
 //signup user and save to database
 app.post('/signup', function (req, res) {
-
-  console.log("...");
-  console.log(req.body);
   if (req.body.fullname &&
       req.body.email &&
       req.body.username &&
@@ -197,51 +174,37 @@ app.post('/signup', function (req, res) {
         password: hash,
         savedTopics: []
       }
-      console.log("userData is:");
-      console.log(userData);
   }
     //use schema.create to insert data into the db
     User.create(userData, function (err, user) {
       if (err) {
-        console.log("error");
         return res.redirect('/');
       } else {
-        console.log("no error");
         return res.redirect('/');
       }
     });
 });
 //check if username and password is correct
 app.post('/login', function (req, res) {
-  console.log('findOne');
   if (req.body.username && req.body.password) {  	
     User.findOne({ username: req.body.username}, (err, aUser) => {
       if (err) {
-        console.log("error!!");
         return res.redirect('/login');
       } else {
         if (aUser != null) {
-          console.log(aUser);
           if(bcrypt.compareSync(req.body.password, aUser.password)){
           	req.session.userInfo = aUser; //unique session identifier 
-           	console.log("req.session:");
-			      console.log(req.session);
-         	  console.log("req.session.user:");
-			      console.log(req.session.userInfo);
           	res.render('login', aUser);
           }
           else{
-          	console.log("Incorrect Password");
           	return false;
           }
         } else {
-          console.log("No such user found");
           return false;
         } 
       }
     });
   } else {
-    console.log("No info entered");
     return res.redirect('/');
   }
 });
@@ -249,7 +212,6 @@ app.post('/login', function (req, res) {
 //logout of page and clear session 	
 app.get('/logout', function (req, res) {
    if (req.session.userInfo && req.cookies.user_sessionid) {
-   		console.log("clearing");
         res.clearCookie('user_sessionid');
         res.redirect('/');
     } else {
@@ -267,7 +229,6 @@ app.get('/deleteAcc', function(req, res){
 		}
 		else {
 			if (req.session.userInfo && req.cookies.user_sessionid) {
-   				console.log("clearing after deleting account");
         		res.clearCookie('user_sessionid');
         	}	
 			res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});

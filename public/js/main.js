@@ -66,13 +66,11 @@ $('#saved_button').click(function() {
 $('.loadSaved').click(function() {
     document.getElementById("graph").innerHTML = "";
     var topic = $(this).text();
-    console.log(topic);
     document.getElementById("inputDays").hidden = false;
     $('#inputDays').bind('keypress', function(e) {
         if (e.keyCode==13) {
                 var days = $('#inputDays').val();
                 if (days > 0) {
-                    console.log(topic);
                     // Set a callback to run when the Google Visualization API is loaded.
                     google.charts.setOnLoadCallback(drawChart(topic,days));
             }
@@ -95,7 +93,6 @@ $('.deleteTopic').click(function() {
 });
 
 function drawChart(topic, days) {
-    console.log(topic);
     var rows = [];
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'date');
@@ -119,7 +116,6 @@ function drawChart(topic, days) {
 
         getRow(url,from,function(row) {
             data.addRow(row);
-            console.log("add row");
         });
     }
     
@@ -129,9 +125,7 @@ function drawChart(topic, days) {
                    'height':500};
 
     // Instantiate and draw our chart, passing in some options.
-    console.log("before draw");
     var chart = new google.visualization.LineChart(document.getElementById('graph'));
-    console.log("after draw");
     chart.draw(data, options);
   }
 
@@ -141,8 +135,6 @@ function getRow(url, isodate, callback) {
         url:url,
         async: false,
         success:function(data) {
-            console.log(data);
-            console.log(data.articles.length);
             var score = 0;
             for (let x=0; x < data.articles.length; x++) {
                 analyzeSentimentSync((data.articles[x].title + ". " + data.articles[x].description), function(val){
@@ -150,8 +142,6 @@ function getRow(url, isodate, callback) {
                 });
             }
             var sentiment = score / data.articles.length;
-            console.log(isodate);
-            console.log(sentiment);
             var row = [isodate,sentiment];
             callback(row);
         },
@@ -181,7 +171,6 @@ $('#login_button').click(function() {
 
 $('#logout_button').click(function() {
     //logout page
-    console.log("logging out");
   	$("/logout").submit();
    	clear();
         $("#Sidenav").css("width","0px");
@@ -189,8 +178,6 @@ $('#logout_button').click(function() {
         fillSite('https://newsapi.org/v2/top-headlines?country=us&apiKey=0c892f7ce2ee4fd09aef39ff92f65b77');
 });
 $('#delete_account').click(function() {
-    
-    console.log("deleting account");
   	$("/deleteAcc").submit();
    	clear();
         $("#Sidenav").css("width","0px");
@@ -253,7 +240,6 @@ $(document).on("mouseleave",".thumbnail", function(){
 
 $('#usernameText').on('change', function(){
     $.get('/usernamecheck?username=' + $('#usernameText').val().toLowerCase(), function(response){
-        console.log(response.message)
         //$("#userText").show()
 
         if(response.message == "exist"){
@@ -270,7 +256,6 @@ $('#usernameText').on('change', function(){
 
 $('#loginSubmit').on('click', function(){
     $.get('/validLogin?username='+$('#username').val()+'&password='+$('#password').val(), function(response){
-        console.log("validLogin return message " + response.message);
 
         if(response.message == "password_wrong" || response.message == "username_wrong") {   
             alert("Wrong username or password! Try again.");
@@ -309,7 +294,6 @@ function clear() {
 
 //fill page with articles
 function fillSite(url) {
-    //console.log("asdfasdf");
     document.getElementById("articleContents").style.display = "block";
     $.ajax({
         type:'GET',
