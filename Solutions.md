@@ -30,7 +30,7 @@ End-users can organize news topics they are interested in and can easily access 
 
 **PUT:** Users can add the topics they want to keep track of through the save command. Which is done through a PUT request from /api/users/:user/topics/:topic. On success a 200 status code is returned. If the user enters a user that does not exists a 404 status code is returned and if the user is not logged in a 401 status code is returned.
 
-**DELETE:** Users can delete topics from their list. Which is done through a DELETE request from /api/users/:user/topics/:topic. On success a 202 status code is returned. If the user enters a user that does not exists a 404 status code is returned and if the user is not logged in a 401 status code is returned.
+**DELETE:** Users can delete topics from their list. Which is done through a DELETE request from /api/users/:user/topics/:topic. On success a 202 status code is returned. If the user enters a user that does not exists a 404 status code is returned and if the user is not logged in a 401 status code is returned. Users can also delete their own accounts through a DELETE request from /api/users/:user. On success a 202 status code is returned.
 
 **CRUD Operations:**
 
