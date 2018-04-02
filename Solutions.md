@@ -3,9 +3,13 @@
 **Team Members:**
 
 Name: Yushan Lin Student #: 1001713336 Github User Joined: yu-linn Github Account: Yushan-Lin
+
 Name: Ambarish Gugilla Student #: 1001344609
+
 Name: Ramya Prasad Student #: 1001441068
+
 Name: Raymond Choi Student #: 1001649709
+
 
 **Instructions for Running App:**
 
