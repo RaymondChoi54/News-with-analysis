@@ -53,5 +53,5 @@ End-users can organize news topics they are interested in and can easily access 
 
 **DELETE:** The user can DELETE the topic on their saved topics list in the database as well.
 
-
+**Limitations:** The sentiment analysis graph (in saved topics tab) lags when loading due to the large number of api calls. For less wait time: type number of days < 10.   
 
