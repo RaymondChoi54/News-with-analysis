@@ -441,6 +441,7 @@ form:not(.search):not(.deleteTopicForm) button:hover {
 
 .deleteTopicForm {
     display: inline-block;
+    z-index: 1;
 }
 
 /*larger devices*/
@@ -471,6 +472,15 @@ form:not(.search):not(.deleteTopicForm) button:hover {
 	}
 }
 
+@media screen and (max-width: 600px) {
+	#advanced_search {
+		margin-top: 130px;
+	}
+	.articles {
+		margin-top: 160px;
+	}
+}
+
 /*smaller devices*/
 @media screen and (max-width: 500px) {
 	#info {
@@ -481,5 +491,7 @@ form:not(.search):not(.deleteTopicForm) button:hover {
 		width: 250px;
 		height: 200px;
 	}
-
+	#listTopics {
+		margin-left: 5px;
+	}
 }
