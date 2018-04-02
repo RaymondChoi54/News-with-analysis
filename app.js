@@ -71,14 +71,14 @@ app.put('/users/:user/topics/:topic', function (req, res) {
   if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
-        return res.sendStatus(400);
+        return res.sendStatus(404);
       }
       if (aUser != null) {
         if(aUser.savedTopics.length == aUser.savedTopics.filter(function(topic) { return topic != req.params.topic }).length) {
           aUser.savedTopics.push(req.params.topic);
           aUser.save((err1) => {
             if (err1) {
-              res.sendStatus(400);
+              res.sendStatus(404);
             } else {
               req.session.userInfo.savedTopics = aUser.savedTopics;
               res.sendStatus(200);
@@ -88,7 +88,7 @@ app.put('/users/:user/topics/:topic', function (req, res) {
           res.sendStatus(400);
         }
       } else {
-        res.sendStatus(405);
+        res.sendStatus(404);
       }
     });
   } else {
@@ -100,19 +100,19 @@ app.delete('/users/:user/topics/:topic', function (req, res) {
   if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
       if (err) {
-        return res.sendStatus(405);
+        return res.sendStatus(404);
       }
       if (aUser != null) {
         aUser.savedTopics = aUser.savedTopics.filter(function(topic) { return topic != req.params.topic });
         aUser.save((err1) => {
           if (err1) {
-            res.sendStatus(400);
+            res.sendStatus(404);
           } else {
             res.sendStatus(202);
           }
         });
       } else {
-        res.sendStatus(405);
+        res.sendStatus(404);
       }
     });
   } else {
