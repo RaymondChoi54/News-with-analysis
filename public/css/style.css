@@ -57,7 +57,7 @@ body {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
+    z-index: 5;
     cursor: pointer;
 }
 
@@ -71,7 +71,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-	z-index: 3;
+	z-index: 6;
 	margin: auto;
 	overflow: hidden;
 	box-shadow: 1px 1px 5px #000000;
@@ -123,6 +123,7 @@ header {
 	font-size: 200%;
 	opacity: .8;
 	letter-spacing: 4px;
+	z-index: 2;
 }
 
 a {
@@ -135,6 +136,7 @@ a {
 	position: fixed;
 	padding-left: 8px;
 	padding-top: 8px;
+	z-index: 3;
 }
 
 ::-webkit-scrollbar {
@@ -185,6 +187,7 @@ a {
 	margin-top: 15px;
 	font-size: 17px;
 	border: none;
+	z-index: 3;
 }
 /* button that opens search */
 #openSearch {
@@ -192,6 +195,7 @@ a {
 	right: 0px;
 	padding-right: 8px;
 	padding-top: 8px;
+	z-index: 3;
 }
 
 h3 {
@@ -460,7 +464,7 @@ form:not(.search):not(.deleteTopicForm) button:hover {
 /*medium devices*/
 @media screen and (max-width: 630px) {
 	.sidenav {padding-top: 15px;}
-	.sidenav a {font-size: 18px;}
+	.sidenav a {font-size: 18px;} 
 
 	#searchBar {
 		float: none;
