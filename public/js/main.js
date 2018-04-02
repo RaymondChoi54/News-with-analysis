@@ -34,14 +34,6 @@ $('.btn.btn-info.btn-md').click(function() {
         type: 'put',
         url: 'http://localhost:5000/users/' + $("#searchBar").prop('name') + '/topics/' + $("#searchBar").val(),
         success: function(data) {
-            console.log("added");
-
-            // var topic = $(
-            //             '<div class="deleteTopicForm"><button class="loadSaved" >' + $("#searchBar").val() 
-            //             + '</button><button class="deleteTopic" name=' + $("#searchBar").prop('name')
-            //             + ' value=' + $("#searchBar").val() + '>Delete</button></div>');
-            
-            // $('.list-group').append(topic);
             window.location.href = "http://localhost:5000/";
         },
         error: function(err) {
@@ -81,7 +73,6 @@ $('.loadSaved').click(function() {
                 var days = $('#inputDays').val();
                 if (days > 0) {
                     console.log(topic);
-                    // var days=3;
                     // Set a callback to run when the Google Visualization API is loaded.
                     google.charts.setOnLoadCallback(drawChart(topic,days));
             }
@@ -118,7 +109,6 @@ function drawChart(topic, days) {
         var from = currentDay.toISOString().substr(0,10)   //substr(0,10) to remove time
         currentDay.setDate(currentDay.getDate()+1)
         var to = currentDay.toISOString().substr(0,10)
-        //console.log(from + "...." + to)
 
         var url = "https://newsapi.org/v2/everything?language=en" 
         + "&from="+ from
@@ -290,10 +280,6 @@ $('#loginSubmit').on('click', function(){
         }
     })
 })
-
-//$('#user')
-
-
 
 function getUrl() {
     var topic = $("#searchBar").val();

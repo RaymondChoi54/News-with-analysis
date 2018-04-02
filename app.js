@@ -13,8 +13,6 @@ const salt = bcrypt.genSaltSync();
 app.use(express.static(__dirname + '/public'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-// app.get('/', (req, res) => res.render('index'));
-//app.get('/', (req, res) => res.sendFile('index.html', {root : __dirname + '/'}));
 
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
@@ -53,14 +51,7 @@ var checkSession = (req, res, next) => {
     }    
 };
 
-
-// route for handling 404 requests(unavailable routes)
-//app.use(function (req, res, next) {
-//  res.status(404).send("Oops! Cannot find whst you're looking for!")
-//});
-
-
-
+//render login if logged in, else show index page
 app.get('/',  function (req, res) {
 	if (req.session.userInfo && req.cookies.user_sessionid) {	
 	  res.render('login', {
@@ -75,7 +66,7 @@ app.get('/',  function (req, res) {
 		res.render('index', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
 	}
 });
-
+//add topics to saved topic list
 app.put('/users/:user/topics/:topic', function (req, res) {
   if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
@@ -110,7 +101,7 @@ app.put('/users/:user/topics/:topic', function (req, res) {
     res.sendStatus(401);
   }
 });
-
+//deletes topic from saved topics list
 app.delete('/users/:user/topics/:topic', function (req, res) {
   if (req.session.userInfo.username && req.session.userInfo.username == req.params.user) {
     User.findOne({ username: req.session.userInfo.username }, (err, aUser) => {
@@ -139,7 +130,7 @@ app.delete('/users/:user/topics/:topic', function (req, res) {
     res.sendStatus(401);
   }
 });
-
+//check if username is taken
 app.get('/usernamecheck', function(req,res){
   User.findOne({username: req.query.username}, function(err,user){
     if(err){
@@ -157,7 +148,7 @@ app.get('/usernamecheck', function(req,res){
     res.json({message: msg})
   })
 })
-
+//check if login credentials are valid
 app.get('/validLogin', function(req,res){
   User.findOne({username:req.query.username}, function(err,user){
     var msg;
@@ -175,25 +166,20 @@ app.get('/validLogin', function(req,res){
             console.log("req.session.user:");
             console.log(req.session.userInfo);
             msg = "success"
-            //res.render('login', user);
           }
           else{
            console.log("-------Incorrect Password");
             msg = "password_wrong"
-            //return false;
           }
           
         } else {
-          //console.log("--------No such user found");
           msg = "username_wrong"
-          //return false;
         }
-          //change this
         res.json({message: msg})
       }
   })
 })
-
+//signup user and save to database
 app.post('/signup', function (req, res) {
 
   console.log("...");
@@ -214,7 +200,6 @@ app.post('/signup', function (req, res) {
       console.log("userData is:");
       console.log(userData);
   }
-  //console.log
     //use schema.create to insert data into the db
     User.create(userData, function (err, user) {
       if (err) {
@@ -223,11 +208,10 @@ app.post('/signup', function (req, res) {
       } else {
         console.log("no error");
         return res.redirect('/');
-        //req.session.user = userData.email;
       }
     });
 });
-
+//check if username and password is correct
 app.post('/login', function (req, res) {
   console.log('findOne');
   if (req.body.username && req.body.password) {  	
@@ -247,15 +231,13 @@ app.post('/login', function (req, res) {
           	res.render('login', aUser);
           }
           else{
-          	//res.render('incorrectpass', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
           	console.log("Incorrect Password");
           	return false;
           }
         } else {
-          //res.render('incorrectpass', {savedTopics: [], fullname: "", email: "", username: "", password: ""});
           console.log("No such user found");
           return false;
-        }  //change this
+        } 
       }
     });
   } else {
@@ -264,7 +246,7 @@ app.post('/login', function (req, res) {
   }
 });
 
- 	
+//logout of page and clear session 	
 app.get('/logout', function (req, res) {
    if (req.session.userInfo && req.cookies.user_sessionid) {
    		console.log("clearing");
@@ -276,7 +258,7 @@ app.get('/logout', function (req, res) {
 
 });
  
-
+//delete current user account from database
 app.get('/deleteAcc', function(req, res){
 	User.findByIdAndRemove({_id: req.session.userInfo["_id"]}, 
 	   function(err, docs){
