@@ -30,8 +30,8 @@
       <h1 id="loginHeader">Login</h1>
 
       <form class="form" action="/login" method="post">
-        <input name="username" type="text" id="username" placeholder="Username" />
-        <input name="password" type="password" id="password" placeholder="Password" />
+        <input name="username" type="text" id="username" placeholder="Username" required/>
+        <input name="password" type="password" id="password" placeholder="Password" required/>
         <input type="submit" id="loginSubmit" value="LOGIN"/>
       </form>
     </div>
@@ -75,7 +75,7 @@
         </form>
       <% } %>
     </ul>
-    <input id="inputDays" name="days" type="number" placeholder="number of days ago" hidden="true"/>
+    <input id="inputDays" name="days" type="number" min="1" max="15" placeholder="number of days ago" hidden="true"/>
     <div id="graph"></div>
     <div id="articleContents" display="block">
       <div id="advanced_search">advanced search</div>
