@@ -6,8 +6,8 @@ const User = require('./public/js/user')
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const bcrypt = require('bcrypt');
-const salt = bcrypt.genSaltSync();
+// const bcrypt = require('bcrypt');
+// const salt = bcrypt.genSaltSync();
 
 
 app.use(express.static(__dirname + '/public'));
@@ -144,7 +144,7 @@ app.get('/validLogin', function(req,res){
       } else {
         if (user != null) {
           msg = "hi there"
-          if(bcrypt.compareSync(req.query.password, user.password)){
+          if(req.query.password == user.password){
             req.session.userInfo = user; //unique session identifier 
             msg = "success"
           }
@@ -166,7 +166,7 @@ app.post('/signup', function (req, res) {
       req.body.username &&
       req.body.password) {
     var topics = new Array();
-    var hash = bcrypt.hashSync(req.body.password, salt);
+    var hash = req.body.password;
       var userData = {
         fullname: req.body.fullname,
         email: req.body.email,
@@ -192,7 +192,7 @@ app.post('/login', function (req, res) {
         return res.redirect('/login');
       } else {
         if (aUser != null) {
-          if(bcrypt.compareSync(req.body.password, aUser.password)){
+          if(req.body.password == aUser.password){
           	req.session.userInfo = aUser; //unique session identifier 
           	res.render('login', aUser);
           }
